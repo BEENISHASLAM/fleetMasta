@@ -10,6 +10,7 @@ class Appcolor {
   static Color bg = Color.fromRGBO(247, 247, 247, 1);
   static Color borderColor = Color.fromRGBO(255, 254, 254, 1);
   static Color lightBlack = Color.fromRGBO(88, 90, 97, 1);
+  static Color lightgrey =  Color(0xFFE9E9E9);
 
 
 

@@ -5,6 +5,7 @@ import '../components/checkbox.dart';
 import '../components/custom_dropdown.dart';
 import '../components/custom_searchbar.dart';
 import '../components/profilePictureComponenets.dart';
+import '../components/sliderForDashBoard.dart';
 import '../const/colors.dart';
 import '../const/custom_button.dart';
 import '../const/custom_text.dart';
@@ -20,6 +21,7 @@ class dashBoardScreen extends StatefulWidget {
 class _dashBoardScreenState extends State<dashBoardScreen> {
   List<String> DashBoardCarImageList = ['assets/icons/icon_person.png','assets/icons/dashBoardCarIcon.png'];
   List<String> DashBoardDiscriptionList = ["Total Working Day In Current Year ",  "Total Holiday in Current Year"];
+  int i = 1;
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -220,7 +222,7 @@ class _dashBoardScreenState extends State<dashBoardScreen> {
                                     ),)),
                                     SizedBox(height: 10,),
                                     Center(
-                                        child: Container(
+                                        child: i == 0 ? Container(
                                           height: 30,
                                           width: 200,
                                           color: Appcolor.grey,
@@ -228,8 +230,11 @@ class _dashBoardScreenState extends State<dashBoardScreen> {
                                             child: Text("NAN", style: TextStyle(
                                                 fontSize: 20
                                             ),),
-                                          ),))
-                                  ],
+                                          ),):
+                                        Sliderfordashboard()
+
+                                    )
+    ],
                                 ),
                               ),
                             ),

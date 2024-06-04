@@ -1,6 +1,7 @@
 import 'package:fleetmasta/const/colors.dart';
 import 'package:fleetmasta/const/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class RememberMeForgotPassword extends StatefulWidget {
   @override
@@ -49,8 +50,7 @@ class _RememberMeForgotPasswordState extends State<RememberMeForgotPassword> {
         ),
         GestureDetector(
           onTap: () {
-            // Handle forgot password tap
-            print('Forgot Password tapped');
+            Get.toNamed('/forgotPassScreen');
           },
           child: Text(
             'Forgot Password',

@@ -1,3 +1,4 @@
+import 'package:fleetmasta/const/colors.dart';
 import 'package:fleetmasta/routing/app_routing.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Appcolor.purple),
         useMaterial3: true,
       ),
       getPages: AppRouting.routes,

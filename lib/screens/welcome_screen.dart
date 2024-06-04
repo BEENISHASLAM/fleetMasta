@@ -107,7 +107,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             text: TextSpan(
               style: TextStyle(fontSize:13, color:Appcolor.lightBlack), // Default text style
               children: [
-                TextSpan(text: 'Name: FleetMasta |Version: '),
+                TextSpan(text: 'Name: FleetMasta | Version: '),
                 TextSpan(
                   text: ' v2.2',
                   style: TextStyle(color:Appcolor.purple), // Change color for "v2.2"

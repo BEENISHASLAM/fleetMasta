@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       getPages: AppRouting.routes,
-      initialRoute: '/welcomeScreen',
+      initialRoute: '/dashBoardScreen',
     );
   }
 }

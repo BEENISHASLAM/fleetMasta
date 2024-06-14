@@ -1,4 +1,6 @@
 
+
+
 import 'package:fleetmasta/components/custom_txtbox.dart';
 import 'package:fleetmasta/components/logout_popup.dart';
 import 'package:fleetmasta/components/profile_popup.dart';
@@ -6,14 +8,16 @@ import 'package:fleetmasta/components/slider.dart';
 import 'package:fleetmasta/const/colors.dart';
 import 'package:fleetmasta/const/custom_button.dart';
 import 'package:fleetmasta/const/custom_text.dart';
-import 'package:fleetmasta/const/form_validation.dart';
+import 'package:fleetmasta/controllers/about_job_controller.dart';
 import 'package:fleetmasta/controllers/date_picker_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 
 class ProfileScreenAboutJob extends StatelessWidget {
   DatePickerController controller = Get.put(DatePickerController());
+  AboutJobController aboutJobController = Get.put(AboutJobController());
   final SliderController sliderController = Get.find();
   ProfileScreenAboutJob({Key? key}) : super(key: key);
   final GlobalKey<FormState> globalKey = GlobalKey();
@@ -150,9 +154,10 @@ class ProfileScreenAboutJob extends StatelessWidget {
                                         ),
                                         SizedBox(height: 5,),
                                         CustomTextBox(
-                                          controller: null,
+                                          readOnly:true,
+                                          controller:aboutJobController.jobTitle,
                                             obscureText:  false,
-                                            hintText: 'abc'),
+                                            hintText: ''),
                                       ],
                                     ),
                                   ),
@@ -187,7 +192,8 @@ class ProfileScreenAboutJob extends StatelessWidget {
                                                 ),
                                                 SizedBox(height: 5,),
                                                 CustomTextBox(
-                                                  controller: null,
+                                                  readOnly:true,
+                                                  controller:aboutJobController.jobType,
                                                 hintText: 'Full time',)
                                               ],
                                             )
@@ -204,7 +210,7 @@ class ProfileScreenAboutJob extends StatelessWidget {
                                                     text: TextSpan(
                                                       children: [
                                                         TextSpan(
-                                                          text: "Type pf contract",
+                                                          text: "Type of contract",
                                                           style: TextStyle(
                                                             color: Appcolor.lightBlack,
                                                            fontSize: 14,
@@ -218,7 +224,8 @@ class ProfileScreenAboutJob extends StatelessWidget {
                                               ),
                                               SizedBox(height: 5,),
                                               CustomTextBox(
-                                                controller: null,
+                                                  readOnly:true,
+                                                  controller:aboutJobController.typeOfContract,
                                                   hintText: 'Permanent'
                                               )
                                             ],)
@@ -251,9 +258,9 @@ class ProfileScreenAboutJob extends StatelessWidget {
                                         ),
                                         SizedBox(height: 5,),
                                         CustomTextBox(
-
-                                          controller: null,
-                                            hintText: 'Daily')
+                                            readOnly:true,
+                                            controller:aboutJobController.paymentStructure,
+                                            hintText: '')
                                       ],
                                     ),
                                   ),
@@ -288,8 +295,9 @@ class ProfileScreenAboutJob extends StatelessWidget {
                                                 ),
                                                 SizedBox(height: 5,),
                                                 CustomTextBox(
-
-                                                  hintText: 'GBP',)
+                                                  readOnly:true,
+                                                  controller:aboutJobController.currency,
+                                                  hintText: '',)
                                               ],
                                             )
 
@@ -319,8 +327,9 @@ class ProfileScreenAboutJob extends StatelessWidget {
                                               ),
                                               SizedBox(height: 5,),
                                               CustomTextBox(
-                                                controller: null,
-                                                  hintText: '100000'
+                                                  readOnly:true,
+                                                  controller:aboutJobController.annualSalary,
+                                                  hintText: ''
                                               )
                                             ],)
                                         ),
@@ -352,13 +361,14 @@ class ProfileScreenAboutJob extends StatelessWidget {
                                           ),
                                           SizedBox(height: 5,),
                                           CustomTextBox(
+                                            readOnly: true,
                                             controller: controller.empStartDate,
-                                            onPressed:() => controller.selectEmpStartDate(context),
-                                            hintText: 'mm/dd/yy',  suffixIcon: IconButton(
-                                              icon: Icon(Icons.calendar_today, color: Appcolor.grey,
-                                              ),
-                                              onPressed: (){},
-                                          )),
+                                            //onPressed:() => controller.selectEmpStartDate(context),
+                                            hintText: '',
+                                            suffixIcon: IconButton(
+                                              icon:SvgPicture.asset('assets/icons/calender.svg'), color: Appcolor.grey, onPressed: () {  },
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -388,13 +398,14 @@ class ProfileScreenAboutJob extends StatelessWidget {
                                           ),
                                           SizedBox(height: 5,),
                                           CustomTextBox(
-
+                                               readOnly:true,
                                             controller: controller.empEndDate,
-                                            onPressed:() => controller.selectEmpEndDate(context),
-                                            hintText: 'mm/dd/yy',  suffixIcon: IconButton(
-                                            icon: Icon(Icons.calendar_today, color: Appcolor.grey,
+                                           // onPressed:() => controller.selectEmpEndDate(context),
+                                            hintText: 'mm/dd/yy',
+                                            suffixIcon: IconButton(
+                                              icon:SvgPicture.asset('assets/icons/calender.svg'), color: Appcolor.grey, onPressed: () {  },
                                             ),
-                                            onPressed: (){},)),
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -424,8 +435,8 @@ class ProfileScreenAboutJob extends StatelessWidget {
                                           ),
                                           SizedBox(height: 5,),
                                           CustomTextBox(
-
-                                            controller: null,
+                                              readOnly:true,
+                                              controller:aboutJobController.noticePeriod,
                                               hintText: ''),
                                         ],
                                       ),

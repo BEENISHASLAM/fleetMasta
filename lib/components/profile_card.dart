@@ -47,13 +47,13 @@ class ProfileStatusCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildStatusRow('Status', 'Active', Appcolor.grey, Appcolor.green),
+                _buildStatusRow('Status', 'Active', Appcolor.white, Appcolor.green),
                 Divider(),
                 SizedBox(height: 8.0),
                 _buildInfoRow('Created at', '30 April 2024\n18:58 PM'),
                 Divider(),
                 SizedBox(height: 8.0),
-                _buildStatusRow('Profile status', 'Approval pending',Appcolor.grey ,Appcolor.pink,),
+                _buildStatusRow('Profile status', 'Approval pending',Appcolor.lightBlack ,Appcolor.pink,),
               ],
             ),
           ),
@@ -85,6 +85,7 @@ class ProfileStatusCard extends StatelessWidget {
             style: TextStyle(
               color: statusColor,
               fontWeight: FontWeight.bold,
+                fontSize: 14
             ),
           ),
         ),

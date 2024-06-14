@@ -8,7 +8,9 @@ import 'package:fleetmasta/const/custom_button.dart';
 import 'package:fleetmasta/const/custom_text.dart';
 import 'package:fleetmasta/const/form_validation.dart';
 import 'package:fleetmasta/controllers/date_picker_controller.dart';
+import 'package:fleetmasta/controllers/profile_screen2_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
@@ -16,9 +18,10 @@ import '../components/custom_dropdown.dart';
 
 class ProfileScreen2 extends StatelessWidget {
   DatePickerController controller = Get.put(DatePickerController());
+  ProfileHomeController profileController = Get.put(ProfileHomeController());
   final SliderController sliderController = Get.find();
   ProfileScreen2({Key? key}) : super(key: key);
-  final GlobalKey<FormState> globalKey = GlobalKey();
+  final GlobalKey<FormState> globalKey1 = GlobalKey();
    TextEditingController phoneController = TextEditingController();
   void _handleBackNavigation(BuildContext context) {
     sliderController.updateSliderValue(sliderController.currentSliderValue.value - 1);
@@ -121,7 +124,7 @@ class ProfileScreen2 extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10),
                         child: Form(
-                          key: globalKey,
+                          key: globalKey1,
                           child: Column(
                             children: [
                               SizedBox(height: 20,),
@@ -199,9 +202,6 @@ class ProfileScreen2 extends StatelessWidget {
                                         ),
                                         SizedBox(height: 5,),
                                         CustomTextBox(
-                                            onValidate:(str){
-                                              return HelperFunction.checkFirstName(str);
-                                            },
                                             obscureText:  false,
                                             hintText: ''),
                                       ],
@@ -424,11 +424,12 @@ class ProfileScreen2 extends StatelessWidget {
                                         ),
                                         SizedBox(height: 5,),
                                         CustomTextBox(
-                                            onValidate:(str){
-                                              return HelperFunction.checkFirstName(str);
-                                            },
+                                          controller: profileController.emailController,
+                                          readOnly: true,
                                             obscureText:  false,
-                                            hintText: 'Enter your email address'),
+                                            hintText: '',
+
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -506,8 +507,21 @@ class ProfileScreen2 extends StatelessWidget {
                                         Padding(
                                           padding: const EdgeInsets.all(4.0),
                                           child: CustomDropdown(
+                                            validator: (value) {
+                                              if (value == null || value.isEmpty) {
+                                                return '';
+                                              }
+                                              return null;
+                                            },
                                               text:'Select' ,
-                                          items: ['Yes', 'No']),
+                                          items: ['Yes', 'No'],
+                                            onChanged: (String? newValue) {
+                                              if (newValue != null) {
+                                                profileController.setSelectedValue(newValue);
+                                              }
+                                            },
+                                          ),
+
                                         ),
                                       ],
                                     ),
@@ -543,12 +557,13 @@ class ProfileScreen2 extends StatelessWidget {
                                           ),
                                         ),
                                         SizedBox(height: 5,),
-                                        CustomTextBox(
-                                            onValidate:(str){
-                                              return HelperFunction.checkFirstName(str);
-                                            },
-                                            obscureText:  false,
-                                            hintText: ''),
+                                      Obx(() =>  CustomTextBox(
+                                          onValidate: profileController.isValidationEnabledRightToWork.value
+                                              ? (value) {
+                                            return HelperFunction.checkFirstName(value);}
+                                              : null,
+                                           obscureText:  false,
+                                            hintText: '')),
                                       ],
                                     ),
                                   ),
@@ -583,17 +598,16 @@ class ProfileScreen2 extends StatelessWidget {
                                           ),
                                         ),
                                         SizedBox(height: 5,),
-                                        CustomTextBox(
-                                          onValidate:(str){
-                                            return HelperFunction.checkFirstName(str);
-                                          },
+                                        Obx(() => CustomTextBox(
+                                            onValidate: profileController.isValidationEnabledRightToWork.value ? (value) {
+                                              return HelperFunction.checkFirstName(value);
+                                            } : null,
                                           controller: controller.passportExpiryDate,
                                           onPressed:() => controller.selectPassportExDate(context),
-                                          suffixIcon: IconButton(
-                                            icon: Icon(Icons.calendar_today,color: Appcolor.grey,),
-                                             onPressed: (){}
-                                            ),
                                           hintText: 'mm/dd/yy',
+                                          suffixIcon: IconButton(
+                                            icon:SvgPicture.asset('assets/icons/calender.svg'), color: Appcolor.grey, onPressed: () {  },
+                                          )),
                                         ),
                                       ],
                                     ),
@@ -606,7 +620,7 @@ class ProfileScreen2 extends StatelessWidget {
                               Padding(
                                 padding: EdgeInsets.symmetric(vertical: 10,  horizontal: 10),
                                 child: CustomButton(text: 'Next', onPressed: () {
-                                  if (globalKey.currentState!.validate()) {
+                                  if (globalKey1.currentState!.validate()) {
                                     sliderController.updateSliderValue(
                                         sliderController.currentSliderValue
                                             .value + 1);

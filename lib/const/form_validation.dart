@@ -18,9 +18,19 @@ class HelperFunction{
 
     return null;
   }
+  static String? checkPassword(String? email){
+    if(email!.isEmpty){
+      return "";
+    }
+
+    return null;
+  }
   static String? checkEmail(String? email){
     if(email!.isEmpty){
       return "";
+    }
+    else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$').hasMatch(email)) {
+      return 'Please enter a valid email address';
     }
 
     return null;

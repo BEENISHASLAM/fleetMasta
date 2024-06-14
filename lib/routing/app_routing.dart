@@ -1,3 +1,4 @@
+import 'package:fleetmasta/screens/dashboard_screen.dart';
 import 'package:fleetmasta/screens/login_screen.dart';
 import 'package:fleetmasta/screens/profile_screen1.dart';
 import 'package:fleetmasta/screens/profile_screen2.dart';
@@ -12,7 +13,6 @@ import 'package:fleetmasta/screens/reset_password.dart';
 import 'package:fleetmasta/screens/view_profile_screen1.dart';
 import 'package:fleetmasta/screens/welcome_screen.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
-import '../screens/dummy.dart';
 import '../screens/forgot_password.dart';
 import '../screens/profile_confrimation_screen.dart';
 import '../screens/profile_screen_emergency_contact.dart';
@@ -35,7 +35,7 @@ class AppRouting {
     GetPage(name: "/profileUploadDoc", page:()=>ProfileUploadDocumentsScreen(),),
     GetPage(name: "/profileConfirmationScreen", page:()=>profileConfirmationScreen(),),
     GetPage(name: "/viewProfileScreen", page:()=>ViewProfileScreen1(),),
-    GetPage(name: "/dummy", page:()=>Dummy()),
+    GetPage(name: "/dashboardScreen", page:()=>DashboardScreen(),),
 
 
   ];

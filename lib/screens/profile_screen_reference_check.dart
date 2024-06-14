@@ -10,11 +10,13 @@ import 'package:fleetmasta/const/custom_button.dart';
 import 'package:fleetmasta/const/custom_text.dart';
 import 'package:fleetmasta/const/form_validation.dart';
 import 'package:fleetmasta/controllers/profile_controller.dart';
+import 'package:fleetmasta/controllers/profile_reference_check_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProfileScreenReferenceCheck extends StatelessWidget {
   ProfileController controller = Get.put(ProfileController());
+  ProfileReferenceCheckController profileController = Get.put(ProfileReferenceCheckController());
   final SliderController sliderController = Get.find();
   ProfileScreenReferenceCheck({Key? key}) : super(key: key);
   final GlobalKey<FormState> globalKey = GlobalKey();
@@ -161,8 +163,21 @@ class ProfileScreenReferenceCheck extends StatelessWidget {
                                         Padding(
                                           padding: const EdgeInsets.all(4.0),
                                           child: CustomDropdown(
+                                            validator: (value) {
+                                              if (value == null || value.isEmpty) {
+                                                return '';
+                                              }
+                                              return null;
+                                            },
                                               text: "Select",
-                                              items: ['Yes','No']),
+                                              items: ['Yes','No'],
+                                            onChanged: (String? newValue) {
+                                              if (newValue!= null) {
+                                                profileController.setSelectedValue(newValue);// Toggle validation requirement
+                                              }
+                                            },
+
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -198,12 +213,12 @@ class ProfileScreenReferenceCheck extends StatelessWidget {
                                           ),
                                         ),
                                        SizedBox(height: 5,),
-                                       CustomTextBox(
-                                           onValidate:(str){
-                                             return HelperFunction.checkFirstName(str);
-                                           },
-                                         controller: null,
-                                           hintText: ''),
+                                        Obx(() =>CustomTextBox(
+                                            onValidate: profileController.isValidationEnabled.value
+                                                ? (value) {
+                                              return HelperFunction.checkFirstName(value);}
+                                                : null,
+                                            hintText: '')),
                                       ],
                                     ),
                                   ),
@@ -246,11 +261,12 @@ class ProfileScreenReferenceCheck extends StatelessWidget {
                                                   ),
                                                 ),
                                                 SizedBox(height: 5,),
-                                                CustomTextBox(
-                                                  onValidate:(str){
-                                                    return HelperFunction.checkFirstName(str);
-                                                  },
-                                                  hintText: '',)
+                                                Obx(() =>CustomTextBox(
+                                                    onValidate: profileController.isValidationEnabled.value
+                                                        ? (value) {
+                                                      return HelperFunction.checkFirstName(value);}
+                                                        : null,
+                                                    hintText: '')),
                                               ],
                                             )
 
@@ -287,13 +303,12 @@ class ProfileScreenReferenceCheck extends StatelessWidget {
                                                 ),
                                               ),
                                               SizedBox(height: 5,),
-                                              CustomTextBox(
-                                                onValidate:(str){
-                                                  return HelperFunction.checkFirstName(str);
-                                                },
-                                                hintText: '',
-                                                controller: null,
-                                              )
+                                              Obx(() =>CustomTextBox(
+                                                  onValidate: profileController.isValidationEnabled.value
+                                                      ? (value) {
+                                                    return HelperFunction.checkFirstName(value);}
+                                                      : null,
+                                                  hintText: '')),
                                             ],)
                                         ),
                                       ],
@@ -335,11 +350,12 @@ class ProfileScreenReferenceCheck extends StatelessWidget {
                                                     ),
                                                   ),
                                                 ),
-                                                CustomTextBox(
-                                                  onValidate:(str){
-                                                    return HelperFunction.checkFirstName(str);
-                                                  },
-                                                  hintText: '',)
+                                                Obx(() =>CustomTextBox(
+                                                    onValidate: profileController.isValidationEnabled.value
+                                                        ? (value) {
+                                                      return HelperFunction.checkFirstName(value);}
+                                                        : null,
+                                                    hintText: '')),
                                               ],
                                             )
 
@@ -375,13 +391,12 @@ class ProfileScreenReferenceCheck extends StatelessWidget {
                                                   ),
                                                 ),
                                               ),
-                                              CustomTextBox(
-                                                onValidate:(str){
-                                                  return HelperFunction.checkFirstName(str);
-                                                },
-                                                hintText: '',
-                                                controller: null,
-                                              )
+                                              Obx(() =>CustomTextBox(
+                                                  onValidate: profileController.isValidationEnabled.value
+                                                      ? (value) {
+                                                    return HelperFunction.checkFirstName(value);}
+                                                      : null,
+                                                  hintText: '')),
                                             ],)
                                         ),
                                       ],
@@ -420,9 +435,19 @@ class ProfileScreenReferenceCheck extends StatelessWidget {
                                         SizedBox(height: 8,),
                                         Padding(
                                           padding: const EdgeInsets.all(4.0),
-                                          child: CustomDropdown(
-                                              text: "Select",
-                                              items: ['Yes','No']),
+                                          child:
+                                          Obx(() => CustomDropdown(
+                                            validator: profileController.isValidationEnabled.value
+                                                ? (value) {
+                                              if (value == null || value.isEmpty) {
+                                                return '';
+                                              }
+                                              return null;
+                                            }
+                                                : null,
+                                            text: "Select",
+                                            items: ['Yes', 'No'],
+                                          ))
                                         ),
                                       ],
                                     ),

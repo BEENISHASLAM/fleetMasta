@@ -10,11 +10,13 @@ import 'package:fleetmasta/const/custom_button.dart';
 import 'package:fleetmasta/const/custom_text.dart';
 import 'package:fleetmasta/const/form_validation.dart';
 import 'package:fleetmasta/controllers/profile_controller.dart';
+import 'package:fleetmasta/controllers/profile_screen_paymentInfo_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProfileScreenPaymentInfo extends StatelessWidget {
 ProfileController controller = Get.put(ProfileController());
+ProfileScreenPaymentInfoController profileController = Get.put(ProfileScreenPaymentInfoController());
 final SliderController sliderController = Get.find();
 ProfileScreenPaymentInfo({Key? key}) : super(key: key);
 final GlobalKey<FormState> globalKey = GlobalKey();
@@ -162,8 +164,20 @@ Widget build(BuildContext context) {
                                         Padding(
                                           padding: const EdgeInsets.all(4.0),
                                           child: CustomDropdown(
+                                            validator: (value) {
+                                              if (value == null || value.isEmpty) {
+                                                return '';
+                                              }
+                                              return null;
+                                            },
                                               text: "Select",
-                                              items: ['Yes','No']),
+                                              items: ['Yes','No'],
+                                            onChanged: (String? newValue) {
+                                              if (newValue!= null) {
+                                                profileController.setSelectedValue(newValue);// Toggle validation requirement
+                                              }
+                                            },
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -200,10 +214,12 @@ Widget build(BuildContext context) {
                                         ),
                                       ),
                                     SizedBox(height: 5,),
-                                    CustomTextBox(
-                                        onValidate:(str){
-                                          return HelperFunction.checkFirstName(str);
-                                        },hintText: ''),
+                                      Obx(() =>CustomTextBox(
+                                          onValidate: profileController.isValidationEnabled.value
+                                              ? (value) {
+                                            return HelperFunction.checkFirstName(value);}
+                                              : null,
+                                          hintText: '')),
                                     ],
                                   ),
                                 ),
@@ -241,10 +257,18 @@ Widget build(BuildContext context) {
                                         SizedBox(height: 8,),
                                         Padding(
                                           padding: const EdgeInsets.all(4.0),
-                                          child: CustomDropdown(
-                                              text: "Select",
-                                              items: ['Yes','No']),
-                                        ),
+                                          child:   Obx(() => CustomDropdown(
+                                            validator: profileController.isValidationEnabled.value
+                                                ? (value) {
+                                              if (value == null || value.isEmpty) {
+                                                return '';
+                                              }
+                                              return null;
+                                            }
+                                                : null,
+                                            text: "Select",
+                                            items: ['Yes', 'No'],
+                                          ))),
                                       ],
                                     ),
                                   ),

@@ -3,6 +3,8 @@ import 'package:file_picker/file_picker.dart';
 
 class FileUploadController extends GetxController {
   var uploadedFiles = Map<String, String?>().obs;
+  var result = ''.obs;
+  var isUploadEnabled = true.obs;
 
   void pickFile(String key) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
@@ -23,3 +25,7 @@ class FileUploadController extends GetxController {
     return true;
   }
 }
+
+
+
+

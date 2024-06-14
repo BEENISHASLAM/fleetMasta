@@ -19,8 +19,8 @@ class DatePickerController extends ChangeNotifier {
     dateOfBirth.text='';
     passportExpiryDate.text="";
     cpcCardExp.text="";
-    empEndDate.text="";
-    empStartDate.text="";
+    empEndDate.text="2024-05-30";
+    empStartDate.text="2024-02-03";
   }
 
   Future<void> selectDateLicenceExp(BuildContext context) async {

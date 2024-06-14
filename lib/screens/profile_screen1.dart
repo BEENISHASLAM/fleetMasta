@@ -10,6 +10,7 @@ import 'package:fleetmasta/const/custom_text.dart';
 import 'package:fleetmasta/const/form_validation.dart';
 import 'package:fleetmasta/controllers/image_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../components/custom_dropdown.dart';
@@ -123,11 +124,13 @@ Widget build(BuildContext context) {
                           SizedBox(height: 20,),
                           Obx(() {
                             return
-                              GestureDetector(
-                              onTap: () {
+                            Stack(
+                              alignment: Alignment.topRight,
+                              children: [
+                              IconButton(onPressed: (){
                                 imagePickerController.pickImage();
-                              },
-                              child: Padding(
+                              },   icon: const Icon(Icons.edit, size: 30,),),
+                              Padding(
                                 padding: EdgeInsets.all(10),
                                 child: ClipOval(
                                   child: imagePickerController.selectedImagePath.value.isEmpty
@@ -144,7 +147,12 @@ Widget build(BuildContext context) {
                                   ),
                                 ),
                               ),
-                            );
+                            ],);
+                              // GestureDetector(
+                              // onTap: () {
+                              //   imagePickerController.pickImage();
+                              // },
+
                           }),
                           Container(
                             decoration: BoxDecoration(
@@ -185,6 +193,7 @@ Widget build(BuildContext context) {
                                     ),
                                     SizedBox(height: 5,),
                                     CustomTextBox(
+
                                         onValidate:(str){
                                           return HelperFunction.checkFirstName(str);
                                         },
@@ -267,15 +276,16 @@ Widget build(BuildContext context) {
                                     SizedBox(height: 5,),
                                     CustomTextBox(
                                       onValidate: (str){
-                                        return HelperFunction.checkEmail(str);
+                                        return HelperFunction.checkDob(str);
                                       },
                                       controller: controller.dateOfBirth,
                                       onPressed:() => controller.selectDateOfBirth(context),
-                                      hintText: 'mm/dd/yy',  suffixIcon: IconButton(
-                                        icon: Icon(Icons.calendar_today, color: Appcolor.grey,
+                                      hintText: 'mm/dd/yy',
+                                        suffixIcon: IconButton(
+                                        icon:SvgPicture.asset('assets/icons/calender.svg'), color: Appcolor.grey, onPressed: () {  },
                                         ),
-                                        onPressed: (){},
-                                    ) ),
+
+                                    )
                                   ],
                                 ),
                               ),
@@ -313,7 +323,12 @@ Widget build(BuildContext context) {
                                     Padding(
                                       padding: const EdgeInsets.all(4.0),
                                       child: CustomDropdown(
-
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return '';
+                                          }
+                                          return null;
+                                        },
                                         text: 'Select nationality',
                                         items: [
                                           "Afghanistan",
@@ -550,6 +565,12 @@ Widget build(BuildContext context) {
                                       ),
                                       SizedBox(height: 10,),
                                       CustomDropdown(
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return '';
+                                          }
+                                          return null;
+                                        },
                                         text: 'Select martial status',
                                         items: ['Single', 'Maried', 'Widowed','Divorced', ],),
                                     ],

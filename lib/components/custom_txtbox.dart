@@ -8,14 +8,17 @@ class CustomTextBox extends StatelessWidget {
   final  controller;
   final onPressed;
   final onValidate;
-
+  final keyboardType;
+  final bool readOnly;
   CustomTextBox({
     required this.hintText,
     this.obscureText = false,
     this.suffixIcon,
     this.controller,
     this.onPressed,
-    this.onValidate
+    this.onValidate,
+    this.keyboardType,
+    this.readOnly=false,
   });
 
   @override
@@ -24,6 +27,8 @@ class CustomTextBox extends StatelessWidget {
       padding: const EdgeInsets.all(6.0),
       child: Center(
         child: TextFormField(
+          readOnly: readOnly,
+          keyboardType: keyboardType,
           validator: onValidate,
           onTap: onPressed,
           controller: controller,
@@ -34,6 +39,7 @@ class CustomTextBox extends StatelessWidget {
             // Change the color here
           ),
           decoration: InputDecoration(
+            errorStyle: const TextStyle(height: 0),
             hintText: hintText,
             suffixIcon: suffixIcon,
             filled: true,
@@ -47,6 +53,7 @@ class CustomTextBox extends StatelessWidget {
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.0),
               borderSide: BorderSide(color: Colors.red),
+
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.0),

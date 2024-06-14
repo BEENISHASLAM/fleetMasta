@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class EvidenceUpload extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final double itemHeight =900; // Adjust this height as needed
+    final double itemHeight =190; // Adjust this height as needed
     final int itemCount = 13; // Total number of items in the grid
     final int crossAxisCount = 2; // Number of columns in the grid
     final int rowCount = (itemCount / crossAxisCount).ceil(); // Calculate the number of rows

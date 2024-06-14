@@ -84,14 +84,22 @@ class ProfileViewController extends GetxController {
     currentTabTitle.value = categories[0];
   }
 
+  // void selectCategory(int index) {
+  //   selectedIndex.value = index;
+  //   pageController.jumpToPage(index);
+  //   currentTabTitle.value = categories[index];
+  // }
   void selectCategory(int index) {
     selectedIndex.value = index;
-    pageController.jumpToPage(index);
     currentTabTitle.value = categories[index];
   }
-
   void onPageChanged(int index) {
     selectedIndex.value = index;
     currentTabTitle.value = categories[index];
   }
 }
+
+
+
+
+

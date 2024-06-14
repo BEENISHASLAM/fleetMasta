@@ -9,7 +9,7 @@ import '../const/form_validation.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
-  final GlobalKey<FormState> globalKey = GlobalKey();
+  final GlobalKey<FormState> formGlobalKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class LoginScreen extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                     child: Form(
-                      key: globalKey,
+                      key: formGlobalKey,
                       child: Column(
                         children: [
                           SizedBox(height: 20),
@@ -90,8 +90,9 @@ class LoginScreen extends StatelessWidget {
                                   ),
                                 ),
                                 CustomTextBox(
+                                  keyboardType: TextInputType.emailAddress,
                                   onValidate: (str) {
-                                    return HelperFunction.checkFirstName(str);
+                                    return HelperFunction.checkEmail(str);
                                   },
                                   controller: null,
                                   hintText: 'Enter your email address',
@@ -132,7 +133,7 @@ class LoginScreen extends StatelessWidget {
                                 CustomTextBox(
                                   obscureText: true,
                                   onValidate: (str) {
-                                    return HelperFunction.checkEmail(str);
+                                    return HelperFunction.checkPassword(str);
                                   },
                                   controller: null,
                                   hintText: '*******',
@@ -150,7 +151,7 @@ class LoginScreen extends StatelessWidget {
                             child: CustomButton(
                               text: 'Sign in',
                               onPressed: () {
-                                if (globalKey.currentState!.validate()) {
+                                if (formGlobalKey.currentState!.validate()) {
                                   Get.toNamed('/resetPassScreen');
                                 }
                               },

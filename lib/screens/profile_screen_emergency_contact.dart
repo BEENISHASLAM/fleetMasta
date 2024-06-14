@@ -9,12 +9,14 @@ import 'package:fleetmasta/const/custom_button.dart';
 import 'package:fleetmasta/const/custom_text.dart';
 import 'package:fleetmasta/const/form_validation.dart';
 import 'package:fleetmasta/controllers/profile_controller.dart';
+import 'package:fleetmasta/controllers/profile_screen_emergency_contact_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProfileScreenEmergencyContact extends StatelessWidget {
   ProfileController controller = Get.put(ProfileController());
-  final SliderController sliderController = Get.find();
+  ProfileEmergencyContact profileEmgController = Get.put(ProfileEmergencyContact());
+  final SliderController sliderController = Get.put(SliderController());
   ProfileScreenEmergencyContact({Key? key}) : super(key: key);
   final GlobalKey<FormState> globalKey = GlobalKey();
   void _handleBackNavigation(BuildContext context) {
@@ -198,6 +200,7 @@ class ProfileScreenEmergencyContact extends StatelessWidget {
                                         ),
                                         SizedBox(height: 5,),
                                         CustomTextBox(
+                                          keyboardType:TextInputType.phone,
                                             onValidate:(str){
                                               return HelperFunction.checkFirstName(str);
                                             },
@@ -239,7 +242,7 @@ class ProfileScreenEmergencyContact extends StatelessWidget {
                                         SizedBox(height: 5,),
                                         CustomTextBox(
                                             onValidate:(str){
-                                              return HelperFunction.checkFirstName(str);
+                                              return HelperFunction.checkEmail(str);
                                             },
                                             controller: null,
                                             obscureText: false,
@@ -277,12 +280,26 @@ class ProfileScreenEmergencyContact extends StatelessWidget {
                                           ),
                                         ),
                                         SizedBox(height: 8,),
-                                        Padding(
+                                      Padding(
                                           padding: const EdgeInsets.all(4.0),
                                           child: CustomDropdown(
                                             text: "Select Relationship to emergency no",
-                                              items: ["Spouse", 'Sibling', "Parent", "Friend", "Co-worker", "Neighbor", "Other"]),
-                                        )
+                                              items: ["Spouse", 'Sibling', "Parent", "Friend", "Co-worker", "Neighbor", "Other"],
+                                                onChanged: (String? newValue) {
+                                                if (newValue != null) {
+                                                  profileEmgController.setSelectedValue(newValue);
+                                                }}),
+                                       ),
+                                        SizedBox(height: 10,),
+                                        Obx(
+                                              () => profileEmgController.isOtherSelected.value
+                                              ? CustomTextBox(
+                                                  onValidate:(str){
+                                                    return HelperFunction.checkLastName(str);
+                                                  },
+                                                  hintText: "")
+                                              : Container(),
+                                        ),
                                       ],
                                     ),
                                   ),

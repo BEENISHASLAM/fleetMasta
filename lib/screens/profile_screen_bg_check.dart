@@ -8,12 +8,14 @@ import 'package:fleetmasta/components/slider.dart';
 import 'package:fleetmasta/const/colors.dart';
 import 'package:fleetmasta/const/custom_button.dart';
 import 'package:fleetmasta/const/custom_text.dart';
+import 'package:fleetmasta/controllers/profile_background_check_controller.dart';
 import 'package:fleetmasta/controllers/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProfileScreenBgCheck extends StatelessWidget {
   ProfileController controller = Get.put(ProfileController());
+  ProfileScreenBgCheckController profileController = Get.put(ProfileScreenBgCheckController());
   final SliderController sliderController = Get.find();
   ProfileScreenBgCheck({Key? key}) : super(key: key);
   final GlobalKey<FormState> globalKey = GlobalKey();
@@ -159,8 +161,20 @@ class ProfileScreenBgCheck extends StatelessWidget {
                                         Padding(
                                           padding: const EdgeInsets.all(4.0),
                                           child: CustomDropdown(
+                                              validator: (value) {
+                                                if (value == null || value.isEmpty) {
+                                                  return '';
+                                                }
+                                                return null;
+                                              },
                                               text: "Select",
-                                              items: ['Yes','No']),
+                                              items: ['Yes','No'],
+                                            onChanged: (String? newValue) {
+                                              if (newValue!= null) {
+                                                profileController.setSelectedValue(newValue);// Toggle validation requirement
+                                              }
+                                            },
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -198,9 +212,19 @@ class ProfileScreenBgCheck extends StatelessWidget {
                                         SizedBox(height: 10,),
                                         Padding(
                                           padding: const EdgeInsets.all(4.0),
-                                          child: CustomDropdown(
-                                              text: "Select",
-                                              items: ['Yes','No']),
+                                          child:
+                                          Obx(() => CustomDropdown(
+                                            validator: profileController.isValidationEnabledBgCheck.value
+                                                ? (value) {
+                                              if (value == null || value.isEmpty) {
+                                                return '';
+                                              }
+                                              return null;
+                                            }
+                                                : null,
+                                            text: "Select",
+                                            items: ['Yes', 'No'],
+                                          ))
                                         ),
                                       ],
                                     ),
@@ -238,6 +262,12 @@ class ProfileScreenBgCheck extends StatelessWidget {
                                         Padding(
                                           padding: const EdgeInsets.all(4.0),
                                           child: CustomDropdown(
+                                              validator: (value) {
+                                                if (value == null || value.isEmpty) {
+                                                  return '';
+                                                }
+                                                return null;
+                                              },
                                               text: "Select",
                                               items: ['Yes','No']),
                                         ),

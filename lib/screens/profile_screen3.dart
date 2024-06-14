@@ -7,7 +7,9 @@ import 'package:fleetmasta/const/colors.dart';
 import 'package:fleetmasta/const/custom_button.dart';
 import 'package:fleetmasta/const/custom_text.dart';
 import 'package:fleetmasta/controllers/date_picker_controller.dart';
+import 'package:fleetmasta/controllers/profile_screen3_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../components/custom_dropdown.dart';
@@ -15,6 +17,7 @@ import '../const/form_validation.dart';
 
 class ProfileScreen3 extends StatelessWidget {
   DatePickerController controller = Get.put(DatePickerController());
+  ProfileScreenExperienceController profileController = Get.put(ProfileScreenExperienceController());
   final SliderController sliderController = Get.find();
   ProfileScreen3({Key? key}) : super(key: key);
   final GlobalKey<FormState> globalKey = GlobalKey();
@@ -206,8 +209,20 @@ class ProfileScreen3 extends StatelessWidget {
                                          Padding(
                                            padding: const EdgeInsets.all(4.0),
                                            child: CustomDropdown(
+                                             validator: (value) {
+                                               if (value == null || value.isEmpty) {
+                                                 return '';
+                                               }
+                                               return null;
+                                             },
                                              text: "Select",
-                                               items: ["Yes", "No"]),
+                                               items: ["Yes", "No"],
+                                             onChanged: (String? newValue) {
+                                               if (newValue != null) {
+                                                 profileController.setSelectedValue(newValue);
+                                               }
+                                             },
+                                           ),
                                          )
                                         ],
                                       ),
@@ -244,11 +259,12 @@ class ProfileScreen3 extends StatelessWidget {
                                           ),
                                         ),
                                         SizedBox(height: 5,),
-                                        CustomTextBox(
-                                            onValidate:(str){
-                                              return HelperFunction.checkFirstName(str);
-                                            },
-                                            hintText: '')
+                                       Obx(() =>CustomTextBox(
+                                           onValidate: profileController.isValidationEnabled.value
+                                               ? (value) {
+                                           return HelperFunction.checkFirstName(value);}
+                                               : null,
+                                            hintText: '')),
 
                                       ],
                                     ),
@@ -287,6 +303,12 @@ class ProfileScreen3 extends StatelessWidget {
                                        Padding(
                                          padding: const EdgeInsets.all(4.0),
                                          child: CustomDropdown(
+                                             validator: (value) {
+                                               if (value == null || value.isEmpty) {
+                                                 return '';
+                                               }
+                                               return null;
+                                             },
                                            text: 'Select',
                                              items: ['Yes', 'No']),
                                        )
@@ -327,109 +349,110 @@ class ProfileScreen3 extends StatelessWidget {
                                        Padding(
                                          padding: const EdgeInsets.all(4.0),
                                          child: CustomDropdown(
+                                           validator: (value) {
+                                             if (value == null || value.isEmpty) {
+                                               return '';
+                                             }
+                                             return null;
+                                           },
                                            text: 'Select',
-                                             items: ['Yes', 'No']),
+                                             items: ['Yes', 'No'],
+                                           onChanged: (String? newValue) {
+                                             if (newValue != null) {
+                                               profileController.setSelectedValueDriverLicence(newValue);
+                                             }
+                                           },
+                                            ),
                                        )
                                       ],
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    padding: const EdgeInsets.all(10),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        SizedBox(
-                                            width: screenWidth * 0.4, // 80% of screen width
-                                           // height: height * 0.6,
-                                            child:Column(
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(horizontal: 10),
+                                          child: RichText(
+                                            text: TextSpan(
                                               children: [
-                                                Padding(
-                                                  padding: EdgeInsets.symmetric(horizontal: 10),
-                                                  child: Align(
-                                                    alignment: Alignment.topLeft,
-                                                    child: RichText(
-                                                      text: TextSpan(
-                                                        children: [
-                                                          TextSpan(
-                                                            text: "Driver's licence number",
-                                                            style: TextStyle(
-                                                              color: Appcolor.lightBlack,
-                                                              fontSize: 14,
-                                                              fontWeight: FontWeight.w700,
-                                                            ),
-                                                          ),
-                                                          TextSpan(
-                                                            text: '*',
-                                                            style: TextStyle(
-                                                              color: Appcolor.purple,
-                                                              fontSize: 14,
-                                                              fontWeight: FontWeight.w700,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
+                                                TextSpan(
+                                                  text: "Driver's licence number",
+                                                  style: TextStyle(
+                                                    color: Appcolor.lightBlack,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
                                                   ),
                                                 ),
-                                                SizedBox(height: 5,),
-                                                CustomTextBox(
-                                                  onValidate:(str){
-                                                    return HelperFunction.checkFirstName(str);
-                                                  },
-                                                  hintText: '',)
+                                                TextSpan(
+                                                  text: '*',
+                                                  style: TextStyle(
+                                                    color: Appcolor.purple,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
                                               ],
-                                            )
-
+                                            ),
+                                          ),
                                         ),
-                                        SizedBox(
-                                            width: screenWidth * 0.4,
-                                            child:Column(children: [
-                                              Padding(
-                                                padding: EdgeInsets.symmetric(horizontal:20),
-                                                child: Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: RichText(
-                                                    text: TextSpan(
-                                                      children: [
-                                                        TextSpan(
-                                                          text: "Driver's licence Expiry Date",
-                                                          style: TextStyle(
-                                                            color: Appcolor.lightBlack,
-                                                           fontSize: 14,
-                                                            fontWeight: FontWeight.w700,
-                                                          ),
-                                                        ),
-                                                        TextSpan(
-                                                          text: '*',
-                                                          style: TextStyle(
-                                                            color: Appcolor.purple,
-                                                            fontSize: 14,
-                                                            fontWeight: FontWeight.w700,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(height: 5,),
-
-                                              CustomTextBox(
-                                                onValidate:(str){
-                                                  return HelperFunction.checkFirstName(str);
-                                                },
-                                                controller: controller.driverLicenseExp,
-                                                onPressed:() => controller.selectDateLicenceExp(context),
-                                                hintText: 'mm/dd/yy',
-                                                suffixIcon: IconButton(
-                                                    icon: Icon(Icons.calendar_today, color: Appcolor.grey,),
-                                                    onPressed: (){}
-                                                ),
-                                              )
-                                            ],)
-                                        ),
+                                        SizedBox(height: 5,),
+                                        Obx(() =>CustomTextBox(
+                                            onValidate: profileController.isValidationEnabledDriverLicenceNo.value
+                                                ? (value) {
+                                              return HelperFunction.checkFirstName(value);}
+                                                : null,
+                                            hintText: '')),
                                       ],
                                     ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(horizontal:10),
+                                        child: RichText(
+                                          text: TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: "Driver's licence Expiry Date",
+                                                style: TextStyle(
+                                                  color: Appcolor.lightBlack,
+                                                 fontSize: 14,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: '*',
+                                                style: TextStyle(
+                                                  color: Appcolor.purple,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 5,),
+
+                                      Obx(() =>CustomTextBox(
+                                        onValidate: profileController.isValidationEnabledDriverLicenceNo.value
+                                            ? (value) {
+                                          return HelperFunction.checkFirstName(value);
+                                        }
+                                            : null,
+                                        controller: controller.driverLicenseExp,
+                                        onPressed:() => controller.selectDateLicenceExp(context),
+                                        hintText: 'mm/dd/yy',
+                                        suffixIcon: IconButton(
+                                          icon:SvgPicture.asset('assets/icons/calender.svg'), color: Appcolor.grey, onPressed: () {  },
+                                        ),
+                                      ))
+                                    ],),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.all(10),
@@ -465,105 +488,107 @@ class ProfileScreen3 extends StatelessWidget {
                                         Padding(
                                           padding: const EdgeInsets.all(4.0),
                                           child: CustomDropdown(
+                                            validator: (value) {
+                                              if (value == null || value.isEmpty) {
+                                                return '';
+                                              }
+                                              return null;
+                                            },
                                             text: 'Select',
-                                              items: ["Yes", "No"]),
+                                              items: ["Yes", "No"],
+                                            onChanged: (String? newValue) {
+                                              if (newValue != null) {
+                                                profileController.setSelectedValueTachoCardNo(newValue);
+                                              }
+                                            },
+                                          ),
                                         )
                                       ],
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    padding: const EdgeInsets.all(10),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        SizedBox(
-                                            width: screenWidth * 0.4,
-                                            child:Column(
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(horizontal: 10),
+                                          child: RichText(
+                                            text: TextSpan(
                                               children: [
-                                                Padding(
-                                                  padding: EdgeInsets.symmetric(horizontal: 10),
-                                                  child: Align(
-                                                    alignment: Alignment.topLeft,
-                                                    child: RichText(
-                                                      text: TextSpan(
-                                                        children: [
-                                                          TextSpan(
-                                                            text: "Tacho card number",
-                                                            style: TextStyle(
-                                                              color: Appcolor.lightBlack,
-                                                              fontSize: 14,
-                                                              fontWeight: FontWeight.w700,
-                                                            ),
-                                                          ),
-                                                          TextSpan(
-                                                            text: '*',
-                                                            style: TextStyle(
-                                                              color: Appcolor.purple,
-                                                              fontSize: 14,
-                                                              fontWeight: FontWeight.w700,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
+                                                TextSpan(
+                                                  text: "Tacho card number",
+                                                  style: TextStyle(
+                                                    color: Appcolor.lightBlack,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
                                                   ),
                                                 ),
-                                                SizedBox(height: 5,),
-                                                CustomTextBox(
-                                                  onValidate:(str){
-                                                    return HelperFunction.checkFirstName(str);
-                                                  },hintText: '',)
+                                                TextSpan(
+                                                  text: '*',
+                                                  style: TextStyle(
+                                                    color: Appcolor.purple,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
                                               ],
-                                            )
-
+                                            ),
+                                          ),
                                         ),
-                                        SizedBox(
-                                            width: screenWidth * 0.4,
-                                            child:Column(children: [
-                                              Padding(
-                                                padding: EdgeInsets.symmetric(horizontal:20),
-                                                child: Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: RichText(
-                                                    text: TextSpan(
-                                                      children: [
-                                                        TextSpan(
-                                                          text: "Tacho card Expiry Date",
-                                                          style: TextStyle(
-                                                            color: Appcolor.lightBlack,
-                                                            fontSize: 14,
-                                                            fontWeight: FontWeight.w700,
-                                                          ),
-                                                        ),
-                                                        TextSpan(
-                                                          text: '*',
-                                                          style: TextStyle(
-                                                            color: Appcolor.purple,
-                                                            fontSize: 14,
-                                                            fontWeight: FontWeight.w700,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              CustomTextBox(
-                                                onValidate:(str){
-                                                  return HelperFunction.checkFirstName(str);
-                                                },
-                                                controller: controller.tachoCardExp,
-                                                onPressed:() => controller.selectTechoCardExp(context),
-                                                hintText: 'mm/dd/yy',
-                                                suffixIcon: IconButton(
-                                                    icon: Icon(Icons.calendar_today, color: Appcolor.grey,),
-                                                    onPressed: (){}
-                                                ),
-                                              )
-                                            ],)
-                                        ),
+                                        SizedBox(height: 5,),
+                                        Obx(() =>CustomTextBox(
+                                            onValidate: profileController.isValidationEnabledTachCardNo.value
+                                                ? (value) {
+                                              return HelperFunction.checkFirstName(value);}
+                                                : null,
+                                            hintText: '')),
                                       ],
                                     ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(horizontal:10),
+                                        child: RichText(
+                                          text: TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: "Tacho card Expiry Date",
+                                                style: TextStyle(
+                                                  color: Appcolor.lightBlack,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: '*',
+                                                style: TextStyle(
+                                                  color: Appcolor.purple,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 5,),
+                                        Obx(() =>CustomTextBox(
+                                            onValidate: profileController.isValidationEnabledTachCardNo.value
+                                                ? (value) {
+                                              return HelperFunction.checkFirstName(value);}
+                                                : null,
+                                            controller: controller.tachoCardExp,
+                                            onPressed:() => controller.selectTechoCardExp(context),
+                                            hintText: 'mm/dd/yy',
+                                            suffixIcon: IconButton(
+                                              icon:SvgPicture.asset('assets/icons/calender.svg'), onPressed: () {  },
+                                            ) )),
+                                    ],),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.all(10),
@@ -600,8 +625,20 @@ class ProfileScreen3 extends StatelessWidget {
                                           Padding(
                                             padding: const EdgeInsets.all(4.0),
                                             child: CustomDropdown(
+                                              validator: (value) {
+                                                if (value == null || value.isEmpty) {
+                                                  return '';
+                                                }
+                                                return null;
+                                              },
                                                 text:'Select' ,
-                                                items: ['Yes', 'No']),
+                                                items: ['Yes', 'No'],
+                                              onChanged: (String? newValue) {
+                                                if (newValue != null) {
+                                                  profileController.setSelectedValueCpcCard(newValue);
+                                                }
+                                              },
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -639,11 +676,12 @@ class ProfileScreen3 extends StatelessWidget {
                                             ),
                                           ),
                                           SizedBox(height: 8,),
-                                          CustomTextBox(
-                                              onValidate:(str){
-                                                return HelperFunction.checkFirstName(str);
-                                              },
-                                              hintText: ''),
+                                          Obx(() =>CustomTextBox(
+                                              onValidate: profileController.isValidationCpcCardNo.value
+                                                  ? (value) {
+                                                return HelperFunction.checkFirstName(value);}
+                                                  : null,
+                                              hintText: '')),
                                           ],
                                       ),
                                     ),
@@ -680,17 +718,17 @@ class ProfileScreen3 extends StatelessWidget {
                                             ),
                                           ),
                                           SizedBox(height: 8,),
-                                          CustomTextBox(
-                                            onValidate:(str){
-                                              return HelperFunction.checkFirstName(str);
-                                            },
+                                          Obx(() => CustomTextBox(
+                                            onValidate: profileController.isValidationCpcCardNo.value
+                                                ? (value) {
+                                              return HelperFunction.checkFirstName(value);}
+                                                : null,
                                               controller: controller.cpcCardExp,
                                               onPressed:() => controller.selectCpcCardExDate(context),
-                                              hintText: 'dd/mm/yy',
+                                              hintText: 'mm/dd/yy',
                                             suffixIcon: IconButton(
-                                                icon: Icon(Icons.calendar_today, color: Appcolor.grey,),
-                                                onPressed: (){}
-                                            ),
+                                              icon:SvgPicture.asset('assets/icons/calender.svg'), color: Appcolor.grey, onPressed: () {  },
+                                            )),
 
                                           ),
                                         ],

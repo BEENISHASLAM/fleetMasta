@@ -9,14 +9,10 @@ class CustomDropdown extends FormField<String> {
     ValueChanged<String?>? onChanged,
     String? text,
     String? errorMessage,
+    FormFieldValidator<String>? validator,
   }) : super(
     key: key,
-    validator: (value) {
-      if (value == null) {
-        return errorMessage ?? '';
-      }
-      return null;
-    },
+    validator: validator,
     initialValue: selectedValue,
     builder: (FormFieldState<String> state) {
       return Column(
@@ -34,11 +30,11 @@ class CustomDropdown extends FormField<String> {
                       color: Color.fromRGBO(136, 136, 136, 1),
                     ),
                     overflow: TextOverflow.ellipsis,
+
                   ),
                 ],
               ),
-              items: items
-                  .map((String item) => DropdownMenuItem<String>(
+              items: items.map((String item) => DropdownMenuItem<String>(
                 value: item,
                 child: Text(
                   item,
@@ -48,8 +44,7 @@ class CustomDropdown extends FormField<String> {
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
-              ))
-                  .toList(),
+              )).toList(),
               value: state.value,
               onChanged: (String? value) {
                 state.didChange(value);
@@ -67,7 +62,6 @@ class CustomDropdown extends FormField<String> {
                   ),
                   color: Colors.white,
                 ),
-                elevation: 2,
               ),
               iconStyleData: const IconStyleData(
                 icon: Icon(
@@ -80,9 +74,11 @@ class CustomDropdown extends FormField<String> {
                 maxHeight: 200,
                 width: 320,
                 decoration: BoxDecoration(
+
                   borderRadius: BorderRadius.circular(12),
+
                 ),
-                offset: const Offset(-0, 0),
+                offset: const Offset(0, 0),
                 scrollbarTheme: ScrollbarThemeData(
                   radius: const Radius.circular(40),
                   thickness: MaterialStateProperty.all<double>(6),
@@ -100,9 +96,11 @@ class CustomDropdown extends FormField<String> {
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(
                 state.errorText ?? '',
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.red,
                   fontSize: 12,
+                  height: 0,
+
                 ),
               ),
             ),

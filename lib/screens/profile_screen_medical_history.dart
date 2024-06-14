@@ -10,11 +10,13 @@ import 'package:fleetmasta/const/custom_button.dart';
 import 'package:fleetmasta/const/custom_text.dart';
 import 'package:fleetmasta/const/form_validation.dart';
 import 'package:fleetmasta/controllers/profile_controller.dart';
+import 'package:fleetmasta/controllers/profile_screen_medical_history_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProfileScreenMedicalHistory extends StatelessWidget {
   ProfileController controller = Get.put(ProfileController());
+  ProfileScreenMedicalHistoryController profileController = Get.put(ProfileScreenMedicalHistoryController());
   final SliderController sliderController = Get.find();
   ProfileScreenMedicalHistory({Key? key}) : super(key: key);
   final GlobalKey<FormState> globalKey = GlobalKey();
@@ -160,8 +162,20 @@ class ProfileScreenMedicalHistory extends StatelessWidget {
                                         Padding(
                                           padding: const EdgeInsets.all(4.0),
                                           child: CustomDropdown(
+                                            validator: (value) {
+                                              if (value == null || value.isEmpty) {
+                                                return '';
+                                              }
+                                              return null;
+                                            },
                                             text: "Select",
-                                              items: ['Yes','No']),
+                                              items: ['Yes','No'],
+                                            onChanged: (String? newValue) {
+                                              if (newValue!= null) {
+                                                profileController.setSelectedValue(newValue);// Toggle validation requirement
+                                              }
+                                            },
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -197,12 +211,12 @@ class ProfileScreenMedicalHistory extends StatelessWidget {
                                           ),
                                         ),
                                         SizedBox(height: 5,),
-                                        CustomTextBox(
-                                            onValidate:(str){
-                                              return HelperFunction.checkFirstName(str);
-                                            },
-                                          controller: null,
-                                            hintText: ''),
+                                        Obx(() =>CustomTextBox(
+                                            onValidate: profileController.isValidationEnabled.value
+                                                ? (value) {
+                                              return HelperFunction.checkFirstName(value);}
+                                                : null,
+                                            hintText: '')),
                                       ],
                                     ),
                                   ),Padding(
@@ -238,10 +252,20 @@ class ProfileScreenMedicalHistory extends StatelessWidget {
                                         SizedBox(height: 10,),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: CustomDropdown(
+                                          child:
+                                         Obx(() => CustomDropdown(
+                                            validator: profileController.isValidationEnabled.value
+                                                ? (value) {
+                                              if (value == null || value.isEmpty) {
+                                                return '';
+                                              }
+                                              return null;
+                                            }
+                                                : null,
                                             text: "Select",
-                                              items: ['Yes','No']),
-                                        ),
+                                            items: ['Yes', 'No'],
+                                         ))),
+
                                       ],
                                     ),
                                   ),Padding(
@@ -275,12 +299,12 @@ class ProfileScreenMedicalHistory extends StatelessWidget {
                                           ),
                                         ),
                                         SizedBox(height: 10,),
-                                        CustomTextBox(
-                                            onValidate:(str){
-                                              return HelperFunction.checkFirstName(str);
-                                            },
-                                          controller: null,
-                                            hintText: '')
+                                        Obx(() =>CustomTextBox(
+                                            onValidate: profileController.isValidationEnabled.value
+                                                ? (value) {
+                                              return HelperFunction.checkFirstName(value);}
+                                                : null,
+                                            hintText: '')),
                                       ],
                                     ),
                                   ),Padding(
@@ -316,10 +340,19 @@ class ProfileScreenMedicalHistory extends StatelessWidget {
                                         SizedBox(height: 10,),
                                         Padding(
                                           padding: const EdgeInsets.all(4.0),
-                                          child: CustomDropdown(
+                                          child:
+                                          Obx(() => CustomDropdown(
+                                            validator: profileController.isValidationEnabled.value
+                                                ? (value) {
+                                              if (value == null || value.isEmpty) {
+                                                return '';
+                                              }
+                                              return null;
+                                            }
+                                                : null,
                                             text: "Select",
-                                              items: ['Yes','No']),
-                                        ),
+                                            items: ['Yes', 'No'],
+                                          ))),
                                       ],
                                     ),
                                   ),
@@ -356,9 +389,19 @@ class ProfileScreenMedicalHistory extends StatelessWidget {
                                         SizedBox(height: 10,),
                                         Padding(
                                           padding: const EdgeInsets.all(4.0),
-                                          child: CustomDropdown(
-                                              text: "Select",
-                                              items: ['Yes','No']),
+                                          child:
+                                          Obx(() => CustomDropdown(
+                                            validator: profileController.isValidationEnabled.value
+                                                ? (value) {
+                                              if (value == null || value.isEmpty) {
+                                                return '';
+                                              }
+                                              return null;
+                                            }
+                                                : null,
+                                            text: "Select",
+                                            items: ['Yes', 'No'],
+                                          )),
                                         ),
                                       ],
                                     ),
@@ -394,12 +437,12 @@ class ProfileScreenMedicalHistory extends StatelessWidget {
                                           ),
                                         ),
                                         SizedBox(height: 5,),
-                                        CustomTextBox(
-                                            onValidate:(str){
-                                              return HelperFunction.checkFirstName(str);
-                                            },
-                                          controller:null,
-                                            hintText: '')
+                                        Obx(() =>CustomTextBox(
+                                            onValidate: profileController.isValidationEnabled.value
+                                                ? (value) {
+                                              return HelperFunction.checkFirstName(value);}
+                                                : null,
+                                            hintText: '')),
                                       ],
                                     ),
                                   ),
@@ -435,12 +478,23 @@ class ProfileScreenMedicalHistory extends StatelessWidget {
                                             ),
                                           ),
                                           SizedBox(height: 10,),
-                                          Padding(
-                                            padding: const EdgeInsets.all(4.0),
-                                            child: CustomDropdown(
+                                           Padding(
+                                              padding: const EdgeInsets.all(4.0),
+                                              child:
+
+                                              Obx(() => CustomDropdown(
+                                                validator: profileController.isValidationEnabled.value
+                                                    ? (value) {
+                                                  if (value == null || value.isEmpty) {
+                                                    return '';
+                                                  }
+                                                  return null;
+                                                }
+                                                    : null,
                                                 text: "Select",
-                                                items: ['Yes','No']),
-                                          ),
+                                                items: ['Yes', 'No'],
+                                              ))),
+
                                         ],
                                       ),
                                     ),
@@ -477,12 +531,12 @@ class ProfileScreenMedicalHistory extends StatelessWidget {
                                             ),
                                           ),
                                           SizedBox(height: 5,),
-                                          CustomTextBox(
-                                              onValidate:(str){
-                                                return HelperFunction.checkFirstName(str);
-                                              },
-                                            controller: null,
-                                              hintText: '')
+                                          Obx(() =>CustomTextBox(
+                                              onValidate: profileController.isValidationEnabled.value
+                                                  ? (value) {
+                                                return HelperFunction.checkFirstName(value);}
+                                                  : null,
+                                              hintText: '')),
                                         ],
                                       ),
                                     ),
@@ -521,10 +575,19 @@ class ProfileScreenMedicalHistory extends StatelessWidget {
                                           SizedBox(height: 10,),
                                           Padding(
                                             padding: const EdgeInsets.all(4.0),
-                                            child: CustomDropdown(
-                                                text: "Select",
-                                                items: ['Yes','No']),
-                                          ),
+                                            child: Obx(() => CustomDropdown(
+                                              validator: profileController.isValidationEnabled.value
+                                                  ? (value) {
+                                                if (value == null || value.isEmpty) {
+                                                  return '';
+                                                }
+                                                return null;
+                                              }
+                                                  : null,
+                                              text: "Select",
+                                              items: ['Yes', 'No'],
+                                            ))),
+
                                         ],
                                       ),
                                     ),
@@ -561,20 +624,16 @@ class ProfileScreenMedicalHistory extends StatelessWidget {
                                             ),
                                           ),
                                           SizedBox(height: 5,),
-                                         CustomTextBox(
-                                             onValidate:(str){
-                                               return HelperFunction.checkFirstName(str);
-                                             },
-                                           controller: null,
-                                             hintText: '')
+                                          Obx(() =>CustomTextBox(
+                                              onValidate: profileController.isValidationEnabled.value
+                                                  ? (value) {
+                                                return HelperFunction.checkFirstName(value);}
+                                                  : null,
+                                              hintText: '')),
                                         ],
                                       ),
                                     ),
                                   ),
-
-
-
-
                                 ],
                               ),
                             ),

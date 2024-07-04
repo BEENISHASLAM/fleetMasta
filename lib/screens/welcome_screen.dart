@@ -109,12 +109,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               children: [
                 TextSpan(text: 'Name: FleetMasta | Version: '),
                 TextSpan(
-                  text: ' v2.2',
+                  text: ' v3.5',
                   style: TextStyle(color:Appcolor.purple), // Change color for "v2.2"
                 ),
                 TextSpan(text: ' | Date:'),
                 TextSpan(
-                  text: ' 28 June 2023',
+                  text: 'July 2024',
                   style: TextStyle(color:Appcolor.purple), // Change color for the date
                 ),
               ],

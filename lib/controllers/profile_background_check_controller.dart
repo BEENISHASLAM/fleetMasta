@@ -1,3 +1,4 @@
+import 'package:fleetmasta/config/global.dart';
 import 'package:get/get.dart';
 class ProfileScreenBgCheckController extends GetxController {
 
@@ -6,6 +7,7 @@ class ProfileScreenBgCheckController extends GetxController {
   void setSelectedValue(String value) {
     selectedValue.value = value;
     isValidationEnabledBgCheck.value = value == 'Yes';
+    Global().fileUploadValue.add(value);
   }
 
 

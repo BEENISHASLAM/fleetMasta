@@ -161,7 +161,10 @@
 //
 
 import 'package:fleetmasta/components/evidence_view.dart';
+import 'package:fleetmasta/components/logout_popup.dart';
+import 'package:fleetmasta/components/notification_popup.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../components/app_menu.dart';
 import '../components/custom_tab.dart';
@@ -216,24 +219,50 @@ class ViewProfileScreen1 extends StatelessWidget {
                               _scaffoldKey.currentState?.openDrawer();
                             },
                           ),
-                          IconButton(
-                            icon: const Icon(Icons.account_circle, color: Colors.white),
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return ProfilePopup(
-                                    onProfileTap: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    onLogoutTap: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  );
-                                },
-                              );
-                            },
-                          ),
+                          Row(children: [
+                            IconButton(
+                              icon: SvgPicture.asset('assets/icons/alert.svg'),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return NotificationPopup(onAllNotificationTap: () {  },);
+                                  },
+                                );
+                              },
+                            ),
+                            IconButton(
+                              icon: Image.asset("assets/images/user-thumb.png" , width: 20,color: Appcolor.white,),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return ProfilePopup(
+                                      onProfileTap: () {
+                                        Get.toNamed('/viewProfileScreen');
+                                      },
+                                      onLogoutTap: () {
+                                        Navigator.of(context).pop(); // Close ProfilePopup
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return LogoutPopup(
+                                              onConfirmLogout: () {
+                                                Get.toNamed('/loginScreen'); // Close LogoutPopup
+                                              },
+                                              onCancel: () {
+                                                Navigator.of(context).pop(); // Close LogoutPopup
+                                              },
+                                            );
+                                          },
+                                        );
+                                      },
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ],)
                         ],
                       ),
                       SizedBox(height: height * 0.02),

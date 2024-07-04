@@ -10,6 +10,7 @@ class CustomTextBox extends StatelessWidget {
   final onValidate;
   final keyboardType;
   final bool readOnly;
+  final  onChanged;
   CustomTextBox({
     required this.hintText,
     this.obscureText = false,
@@ -19,6 +20,7 @@ class CustomTextBox extends StatelessWidget {
     this.onValidate,
     this.keyboardType,
     this.readOnly=false,
+    this.onChanged
   });
 
   @override
@@ -28,6 +30,7 @@ class CustomTextBox extends StatelessWidget {
       child: Center(
         child: TextFormField(
           readOnly: readOnly,
+          onChanged: onChanged,
           keyboardType: keyboardType,
           validator: onValidate,
           onTap: onPressed,

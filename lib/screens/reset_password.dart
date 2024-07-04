@@ -33,15 +33,15 @@ class ResetPassScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(height: height * 0.02), // 2% of screen height
-                      InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: Image.asset('assets/images/back_arrow.png'),
-                        ),
-                      ),
+                      // InkWell(
+                      //   onTap: () {
+                      //     Navigator.pop(context);
+                      //   },
+                      //   child: Align(
+                      //     alignment: Alignment.topLeft,
+                      //     child: Image.asset('assets/images/back_arrow.png'),
+                      //   ),
+                      // ),
                       SizedBox(height: height * 0.05), // 5% of screen height
                       Image.asset('assets/images/FM-White.png'),
                       SizedBox(height: height * 0.03),
@@ -143,7 +143,7 @@ class ResetPassScreen extends StatelessWidget {
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: verticalPadding, horizontal: 10),
                             child: CustomButton(
-                              text: 'Reset',
+                              text: 'Change',
                               onPressed: () {
                                 if (globalKey.currentState!.validate()) {
                                   Get.toNamed('/profileScreen1');

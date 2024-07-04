@@ -45,7 +45,7 @@ class _ConfirmationDialogState extends State<ConfirmationDialog> {
                 ),
                 Expanded(
                   child: grayText(
-                    'I confirm that all the information provided is true and complete and that I understand that any falsification or deliberate omissions may disqualify my application or lead to my dismissal. I confirm that I am entitled to work in the UK and can provide original documentation to confirm this. I understand that my employment is subject to satisfactory references. I consent to the information I have given on this application form and in all other enclosed documentation being held, used and updated under the security safeguards of the Data Protection Act 1998 and GDPR May 25th 2018.',
+                    'Are you sure you want to submit your profile? Please check and ensure your profile information is correct. If the profile is rejected, you will have to complete the profile again. Click ok to continue.',
                   ),
                 ),
               ],
@@ -75,7 +75,7 @@ class _ConfirmationDialogState extends State<ConfirmationDialog> {
                     // Handle submit action
                   }
                       : null,
-                  child: Text('Submit'),
+                  child: Text('Ok'),
                 ),
               ],
             ),

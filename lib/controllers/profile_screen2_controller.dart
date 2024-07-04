@@ -1,3 +1,4 @@
+import 'package:fleetmasta/config/global.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,6 +10,7 @@ class ProfileHomeController extends GetxController {
    void setSelectedValue(String value) {
       selectedValue.value = value;
       isValidationEnabledRightToWork.value = value == 'Yes';
+      Global().fileUploadValue.add(value);
    }
 
    @override

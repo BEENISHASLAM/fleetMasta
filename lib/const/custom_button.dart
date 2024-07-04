@@ -9,6 +9,7 @@ class CustomButton extends StatelessWidget {
   final Color textColor;
   final double borderRadius;
   final double padding;
+  final bool? isDisabled;
 
   const CustomButton({
     Key? key,
@@ -18,6 +19,7 @@ class CustomButton extends StatelessWidget {
     this.textColor = Colors.white,
     this.borderRadius = 100.0,
     this.padding = 10.0,
+    this.isDisabled,
   }) : super(key: key);
 
   @override

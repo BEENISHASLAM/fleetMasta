@@ -1,17 +1,25 @@
 import 'package:dotted_border/dotted_border.dart';
+import 'package:fleetmasta/components/checkbox.dart';
 import 'package:fleetmasta/components/logout_popup.dart';
+import 'package:fleetmasta/components/notification_popup.dart';
 import 'package:fleetmasta/components/profile_popup.dart';
 import 'package:fleetmasta/components/slider.dart';
+import 'package:fleetmasta/components/upload_evidance_checkbox.dart';
+import 'package:fleetmasta/config/global.dart';
 import 'package:fleetmasta/const/colors.dart';
 import 'package:fleetmasta/const/custom_button.dart';
 import 'package:fleetmasta/const/custom_text.dart';
+import 'package:fleetmasta/const/widgets.dart';
+import 'package:fleetmasta/controllers/check_box_controller.dart';
 import 'package:fleetmasta/controllers/file_upload_controller.dart';
 import 'package:fleetmasta/controllers/profile_background_check_controller.dart';
 import 'package:fleetmasta/controllers/profile_controller.dart';
 import 'package:fleetmasta/controllers/profile_screen2_controller.dart';
 import 'package:fleetmasta/controllers/profile_screen3_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:fleetmasta/config/global.dart';
 
 class ProfileUploadDocumentsScreen extends StatelessWidget {
   ProfileController controller = Get.put(ProfileController());
@@ -20,6 +28,7 @@ class ProfileUploadDocumentsScreen extends StatelessWidget {
   SliderController sliderController = Get.put(SliderController());
   ProfileScreenBgCheckController profileBgCheckController = Get.put(ProfileScreenBgCheckController());
   ProfileHomeController profileHomeController = Get.put(ProfileHomeController());
+  final CheckboxController checkboxController = Get.put(CheckboxController());
 
   ProfileUploadDocumentsScreen({Key? key}) : super(key: key);
   final List<String> mandatoryFiles = [
@@ -61,13 +70,10 @@ class ProfileUploadDocumentsScreen extends StatelessWidget {
   }
 
   void _handleNextNavigation(BuildContext context) {
-    int mandatoryFilesCount = mandatoryFiles.length;
-
-    // Count how many mandatory files are actually uploaded
-    int uploadedMandatoryFilesCount = mandatoryFiles.where((fileKey) => uploadEvidenceFileController.uploadedFiles[fileKey]?.isNotEmpty?? false).length;
-
     // Check if all mandatory files are uploaded
-    if (uploadedMandatoryFilesCount >= mandatoryFilesCount) {
+    bool allMandatoryFilesUploaded = mandatoryFiles.every((fileKey) => uploadEvidenceFileController.uploadedFiles[fileKey]?.isNotEmpty ?? false);
+
+    if (allMandatoryFilesUploaded) {
       Get.toNamed('/profileConfirmationScreen');
     } else {
       Get.snackbar(
@@ -78,7 +84,7 @@ class ProfileUploadDocumentsScreen extends StatelessWidget {
       );
     }
   }
-
+  var fileUpload = Global().isUpload;
 
   @override
   Widget build(BuildContext context) {
@@ -111,37 +117,50 @@ class ProfileUploadDocumentsScreen extends StatelessWidget {
                               child: Image.asset('assets/images/back_arrow.png'),
                             ),
                           ),
-                          IconButton(
-                            icon: const Icon(Icons.account_circle, color: Colors.white),
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return ProfilePopup(
-                                    onProfileTap: () {
-                                      Get.toNamed('/viewProfileScreen');
-                                    },
-                                    onLogoutTap: () {
-                                      Navigator.of(context).pop(); // Close ProfilePopup
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return LogoutPopup(
-                                            onConfirmLogout: () {
-                                              Get.toNamed('/loginScreen');
-                                            },
-                                            onCancel: () {
-                                              Navigator.of(context).pop(); // Close LogoutPopup
-                                            },
-                                          );
-                                        },
-                                      );
-                                    },
-                                  );
-                                },
-                              );
-                            },
-                          ),
+                          Row(children: [
+                            IconButton(
+                              icon: SvgPicture.asset('assets/icons/alert.svg'),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return NotificationPopup(onAllNotificationTap: () {  },);
+                                  },
+                                );
+                              },
+                            ),
+                            IconButton(
+                              icon: Image.asset("assets/images/user-thumb.png" , width: 20,color: Appcolor.white,),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return ProfilePopup(
+                                      onProfileTap: () {
+                                        Get.toNamed('/viewProfileScreen');
+                                      },
+                                      onLogoutTap: () {
+                                        Navigator.of(context).pop(); // Close ProfilePopup
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return LogoutPopup(
+                                              onConfirmLogout: () {
+                                                Get.toNamed('/loginScreen'); // Close LogoutPopup
+                                              },
+                                              onCancel: () {
+                                                Navigator.of(context).pop(); // Close LogoutPopup
+                                              },
+                                            );
+                                          },
+                                        );
+                                      },
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ],)
                         ],
                       ),
                       CustomSlider(),
@@ -184,24 +203,34 @@ class ProfileUploadDocumentsScreen extends StatelessWidget {
                               child: Column(
                                 children: [
                                   const SizedBox(height: 20,),
-                                  Obx(() => UploadCard(
+                                  Obx(() => UploadCard( //Mm
                                     title: 'Upload proof of ID (passport or Driver’s license)',
                                     filename: uploadEvidenceFileController.uploadedFiles['proof_of_id'],
-                                    onFilePick: () => uploadEvidenceFileController.pickFile('proof_of_id'),
-                                    isEditable: true // Example method call
-                                  )),
-                                  SizedBox(height: 20,),
-                                  Obx(() => UploadCard(
-                                    title: 'Upload right to work (Passport or work permit)',
-                                    filename: uploadEvidenceFileController.uploadedFiles['right_to_work'],
-                                    onFilePick: () => uploadEvidenceFileController.pickFile('right_to_work'),
-                                    isEditable: profileHomeController.isValidationEnabledRightToWork.value, // Example method call
-                                  )),
-                                  SizedBox(height: 20,),
-                                 Obx(() => UploadCard(
-                                    title: 'Upload proof of address\n(Utility bill, bank statement)',
-                                    filename: uploadEvidenceFileController.uploadedFiles['proof_of_address'],
-                                    onFilePick: () => uploadEvidenceFileController.pickFile('proof_of_address'),
+                                    onFilePick: (){
+                                      uploadEvidenceFileController.pickFile('proof_of_id');
+                                      Global().mandatory1 = true;
+
+                                      },
+                                      isEditable: true
+                                      )),
+                                      SizedBox(height: 20,),
+                                      Obx(() => UploadCard(
+                                      title: 'Upload right to work (Passport or work permit)',
+                                      filename: uploadEvidenceFileController.uploadedFiles['right_to_work'],
+                                      onFilePick: (){
+                                        uploadEvidenceFileController.pickFile('right_to_work');
+
+                                      },
+                                      isEditable: profileHomeController.isValidationEnabledRightToWork.value,
+                                      )),
+                                      SizedBox(height: 20,),
+                                      Obx(() => UploadCard( //mm
+                                      title: 'Upload proof of address (Utility bill, bank statement)',
+                                      filename: uploadEvidenceFileController.uploadedFiles['proof_of_address'],
+                                    onFilePick: () {
+                                        uploadEvidenceFileController.pickFile('proof_of_address');
+                                        Global().mandatory2 = true;
+                                    },
                                     isEditable: true
                                  )),
                                   SizedBox(height: 20,),
@@ -214,27 +243,35 @@ class ProfileUploadDocumentsScreen extends StatelessWidget {
                                   Obx(() => UploadCard(
                                     title: 'Upload back of driver\'s licence',
                                     filename: uploadEvidenceFileController.uploadedFiles['back_drivers_license'],
-                                    onFilePick: () => uploadEvidenceFileController.pickFile('back_drivers_license'),
+                                    onFilePick: () => {
+                                      uploadEvidenceFileController.pickFile('back_drivers_license'),
+                                    },
                                     isEditable: ProfileExpDriverController.isValidationEnabledDriverLicenceNo.value, // Example method call
                                   )), const SizedBox(height: 20,),
                                   Obx(() => UploadCard(
                                     title: 'Upload proof of P45',
                                     filename: uploadEvidenceFileController.uploadedFiles['proof_of_p45'],
                                     onFilePick: () => uploadEvidenceFileController.pickFile('proof_of_p45'),
-                                    isEditable: true // Example method call
+                                    isEditable:ProfileExpDriverController.isValidationProofP45.value,
                                   )), const SizedBox(height: 20,),
-                                  Obx(() => UploadCard(
+                                  Obx(() => UploadCard( //mm
                                       title: 'Upload licence verification check',
                                       filename: uploadEvidenceFileController.uploadedFiles['Upload licence verification check'],
-                                      onFilePick: () => uploadEvidenceFileController.pickFile('Upload licence verification check'),
+                                      onFilePick: (){
+                                        uploadEvidenceFileController.pickFile('Upload licence verification check');
+                                        Global().mandatory3 = true;
+                                      },
                                       isEditable: true // Example method call
                                   )), const SizedBox(height: 20,),
                                   Obx(() => UploadCard(
                                     title: 'Upload front of your tacho card',
                                     filename: uploadEvidenceFileController.uploadedFiles['front_tacho_card'],
-                                    onFilePick: () => uploadEvidenceFileController.pickFile('front_tacho_card'),
+                                    onFilePick: () {uploadEvidenceFileController.pickFile('front_tacho_card');
+                                    uploadEvidenceFileController.updateFirstYesToNo();
+                                    },
                                     isEditable: ProfileExpDriverController.isValidationEnabledTachCardNo.value, // Example method call
-                                  )),  const SizedBox(height: 20,),Obx(() => UploadCard(
+                                  )),  const SizedBox(height: 20,),
+                                  Obx(() => UploadCard(
                                     title: 'Upload back of your tacho card',
                                     filename: uploadEvidenceFileController.uploadedFiles['back_tacho_card'],
                                     onFilePick: () => uploadEvidenceFileController.pickFile('back_tacho_card'),
@@ -244,44 +281,112 @@ class ProfileUploadDocumentsScreen extends StatelessWidget {
                                   Obx(() => UploadCard(
                                     title: 'Upload front of your CPC card',
                                     filename: uploadEvidenceFileController.uploadedFiles['front_cpc_card'],
-                                    onFilePick: () => uploadEvidenceFileController.pickFile('front_cpc_card'),
+                                    onFilePick: () {uploadEvidenceFileController.pickFile('front_cpc_card');
+                                    uploadEvidenceFileController.updateFirstYesToNo();
+                                    },
                                     isEditable: ProfileExpDriverController.isValidationCpcCardNo.value, // Example method call
                                   )), const SizedBox(height: 20,),
                                   Obx(() => UploadCard(
                                     title: 'Upload back of your CPC card',
                                     filename: uploadEvidenceFileController.uploadedFiles['back_cpc_card'],
-                                    onFilePick: () => uploadEvidenceFileController.pickFile('back_cpc_card'),
+                                    onFilePick: () {
+                                      uploadEvidenceFileController.pickFile('back_cpc_card');
+                                    uploadEvidenceFileController.updateFirstYesToNo();
+
+                                    },
                                     isEditable: ProfileExpDriverController.isValidationCpcCardNo.value, // Example method call
                                   )), const SizedBox(height: 20,),
                                   Obx(() => UploadCard(
                                     title: 'Upload background check',
                                     filename: uploadEvidenceFileController.uploadedFiles['background_check'],
-                                    onFilePick: () => uploadEvidenceFileController.pickFile('background_check'),
+                                    onFilePick: () {
+                                        uploadEvidenceFileController.pickFile('background_check');
+                                        uploadEvidenceFileController.updateFirstYesToNo();
+                                    },
                                     isEditable: profileBgCheckController.isValidationEnabledBgCheck.value, // Example method call
                                   )), const SizedBox(height: 20,),
                                   Obx(() => UploadCard(
                                     title: 'Upload drug and alcohol test',
                                     filename: uploadEvidenceFileController.uploadedFiles['drug_alcohol_test'],
-                                    onFilePick: () => uploadEvidenceFileController.pickFile('drug_alcohol_test'),
-                                    isEditable: true,
+                                    onFilePick: () {
+                                        uploadEvidenceFileController.pickFile('drug_alcohol_test');
+                                        uploadEvidenceFileController.updateFirstYesToNo();
+                                        },
+                                      isEditable: profileBgCheckController.isValidationEnabledBgCheck.value,
                                   )),
-                                  const SizedBox(height: 20,),
-                                  Obx(() => UploadCard(
-                                    title: 'Upload additional background check',
-                                    filename: uploadEvidenceFileController.uploadedFiles['additional_background_check'],
-                                    onFilePick: () => uploadEvidenceFileController.pickFile('additional_background_check'),
-                                    isEditable: true,
-                                  )),
+
                                 ],
                               ),
                             ),
                           ),
                           const SizedBox(height: 25,),
+                         Container(child:UploadEvidanceCheckBox(rememberMeText: 'I confirm that all the information provided is true and'
+                             ' complete and that I understand that any falsification or deliberate omissions may'
+                             ' disqualify my application or lead to my dismissal. '
+                             'I confirm that I am entitled to work in the UK and can provide '
+                             'original documentation to confirm this. I understand that my employment is subject'
+                             ' to satisfactory references. I consent to the information I have given on this application'
+                             ' form and in all other enclosed documentation being held, used and '
+                             'updated under the security safeguards of the Data Protection Act 1998 and GDPR May '
+                             '25th 2018.', forgotPasswordText: "",)),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                            child: CustomButton(text: 'Next', onPressed: () {
-                              Get.toNamed('/profileConfirmationScreen');
-                            }),
+                            child: Obx(() =>
+                                CustomButton(
+                                    isDisabled: !checkboxController.isChecked1.value,
+                                text: 'Next',
+                                onPressed: () {
+
+
+                                     var val1=  Global().mandatory1;
+                                     var val2=  Global().mandatory2;
+                                     var val3= Global().mandatory3;
+                                     if(val1 && val2 && val3){
+                                       if (checkboxController.isChecked1.value) {
+                                         if(uploadEvidenceFileController.checkAllNo()){
+                                           Get.toNamed('/profileConfirmationScreen');
+                                         }else{
+                                           Get.snackbar(
+                                             'Error',
+                                             'upload  all mandaotry .',
+                                             backgroundColor: Colors.red,
+                                             colorText: Colors.white,
+                                           );
+                                         }
+
+                                       } else {
+                                         Get.snackbar(
+                                           'Error',
+                                           'upload  all mandaotry .',
+                                           backgroundColor: Colors.red,
+                                           colorText: Colors.white,
+                                         );
+                                       }
+                                     }
+                                     // else if(fileUpload=="No"){
+                                     //    if (checkboxController.isChecked.value) {
+                                     //      Get.toNamed('/profileConfirmationScreen');
+                                     //    } else {
+                                     //      Get.snackbar(
+                                     //        'Error',
+                                     //        'Please confirm that all the information provided is accurate.',
+                                     //        backgroundColor: Colors.red,
+                                     //        colorText: Colors.white,
+                                     //      );
+                                     //    }
+                                     //  }
+                                     else{
+                                        Get.snackbar(
+                                          'Error',
+                                          'upload all files ',
+                                          backgroundColor: Colors.red,
+                                          colorText: Colors.white,
+                                        );
+                                      }
+
+                                }
+
+                                )),
                           ),
                         ],
                       ),
@@ -296,132 +401,43 @@ class ProfileUploadDocumentsScreen extends StatelessWidget {
     );
   }
 
-  String _getTitleForKey(String key) {
-    switch (key) {
-      case 'proof_of_id':
-        return 'Upload proof of ID (passport or Driver’s license)';
-      case 'right_to_work':
-        return 'Upload right to work (Passport or work permit)';
-      case 'proof_of_address':
-        return 'Upload proof of address\n(Utility bill, bank statement)';
-      case 'front_drivers_license':
-        return 'Upload front of driver\'s licence';
-      case 'back_drivers_license':
-        return 'Upload back of driver\'s licence';
-      case 'proof_of_p45':
-        return 'Upload proof of P45';
-      case 'licence_verification_check':
-        return 'Upload licence verification check';
-      case 'front_tacho_card':
-        return 'Upload front of your tacho card';
-      case 'back_tacho_card':
-        return 'Upload back of your tacho card';
-      case 'front_cpc_card':
-        return 'Upload front of your CPC card';
-      case 'back_cpc_card':
-        return 'Upload back of your CPC card';
-      case 'background_check':
-        return 'Upload background check';
-      case 'drug_alcohol_test':
-        return 'Upload drug and alcohol test';
-      case 'additional_background_check':
-        return 'Upload additional background check';
-      default:
-        return 'Upload file';
-    }
-  }
+  // String _getTitleForKey(String key) {
+  //   switch (key) {
+  //     case 'proof_of_id':
+  //       return 'Upload proof of ID (passport or Driver’s license)';
+  //     case 'right_to_work':
+  //       return 'Upload right to work (Passport or work permit)';
+  //     case 'proof_of_address':
+  //       return 'Upload proof of address\n(Utility bill, bank statement)';
+  //     case 'front_drivers_license':
+  //       return 'Upload front of driver\'s licence';
+  //     case 'back_drivers_license':
+  //       return 'Upload back of driver\'s licence';
+  //     case 'proof_of_p45':
+  //       return 'Upload proof of P45';
+  //     case 'licence_verification_check':
+  //       return 'Upload licence verification check';
+  //     case 'front_tacho_card':
+  //       return 'Upload front of your tacho card';
+  //     case 'back_tacho_card':
+  //       return 'Upload back of your tacho card';
+  //     case 'front_cpc_card':
+  //       return 'Upload front of your CPC card';
+  //     case 'back_cpc_card':
+  //       return 'Upload back of your CPC card';
+  //     case 'background_check':
+  //       return 'Upload background check';
+  //     case 'drug_alcohol_test':
+  //       return 'Upload drug and alcohol test';
+  //     case 'additional_background_check':
+  //       return 'Upload additional background check';
+  //     default:
+  //       return 'Upload file';
+  //   }
+  // }
 }
 
-class UploadCard extends StatelessWidget {
-  final String title;
-  final String? filename;
-  final VoidCallback onFilePick;
-  final bool isEditable; // Add this line
 
-  UploadCard({
-    required this.title,
-    this.filename,
-    required this.onFilePick,
-    this.isEditable = true, // Default value set to true
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 300,
-      child: Column(
-        children: [
-          Container(
-            width: 120,
-            child: Align(
-              alignment: Alignment.center,
-              child: RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: title,
-                      style: TextStyle(
-                        color: Appcolor.lightBlack,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    TextSpan(
-                      text: '*',
-                      style: TextStyle(
-                        color: Appcolor.purple,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 10,),
-          DottedBorder(
-            color: Appcolor.grey, // Color of the border
-            strokeWidth: 2, // Width of the border
-            dashPattern: [6, 3], // Pattern of the dashed border
-            borderType: BorderType.Rect, // Border type
-            radius: const Radius.circular(12),
-            child: GestureDetector(
-              onTap: isEditable? onFilePick : null,
-              child: Container(
-                width: 140,
-                height: 120,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(0),
-                    color: Appcolor.white
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.cloud_upload_outlined,
-                      size: 40,
-                      color: Appcolor.grey,
-                    ),
-                    const SizedBox(height: 5,),
-                    Text(
-                      filename != null ? filename! : 'Choose file to upload',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Appcolor.grey,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 
 

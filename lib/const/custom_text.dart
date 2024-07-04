@@ -22,7 +22,7 @@ Widget grayText(String? title){
   return Text(title!, style: TextStyle(fontWeight: FontWeight.w700,color:Appcolor.purple,fontSize: 15.0),);
 }
 Widget grayTex1(String? title){
-  return Text(title!, style: TextStyle(fontWeight: FontWeight.w500,color:Appcolor.lightBlack,fontSize: 12.0),);
+  return Text(title!, style: TextStyle(fontWeight: FontWeight.w400,color:Appcolor.lightBlack,fontSize: 12.0),);
 }
 Widget welcomeText(String? title){
   return Text(title!, style: TextStyle(fontWeight: FontWeight.w500,color:Appcolor.lightBlack,fontSize: 35.0),);

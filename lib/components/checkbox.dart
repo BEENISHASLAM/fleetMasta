@@ -1,66 +1,66 @@
-import 'package:fleetmasta/const/colors.dart';
-import 'package:fleetmasta/const/custom_text.dart';
+import 'package:fleetmasta/controllers/check_box_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:fleetmasta/const/colors.dart';
 
-class RememberMeForgotPassword extends StatefulWidget {
-  @override
-  _RememberMeForgotPasswordState createState() => _RememberMeForgotPasswordState();
-}
+class RememberMeForgotPassword extends StatelessWidget {
+  final String rememberMeText;
+  final String? forgotPasswordText;
+  final CheckboxController checkboxController = Get.put(CheckboxController());
 
-class _RememberMeForgotPasswordState extends State<RememberMeForgotPassword> {
-  bool _isChecked = false;
+  RememberMeForgotPassword({
+    Key? key,
+    required this.rememberMeText,
+    this.forgotPasswordText,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          children: [
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  _isChecked = !_isChecked;
-                });
-              },
-              child: Container(
-                width: 24.0,
-                height: 24.0,
-                decoration: BoxDecoration(
-                  color: _isChecked ? Appcolor.white : Colors.white,
-                  border: Border.all(color:Appcolor.grey),
-                  borderRadius: BorderRadius.circular(8.0),
+        Flexible(
+          child: Row(
+            children: [
+              Obx(() => Checkbox(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
                 ),
-                child: _isChecked
-                    ? Icon(
-                  Icons.check,
-                  size: 18.0,
-                  color:Appcolor.purple,
-                  weight:20,
-                )
-                    : null,
+                value: checkboxController.isChecked.value,
+                side: BorderSide(color: Appcolor.grey),
+                onChanged: (bool? value) {
+                  checkboxController.toggleCheckbox(value);
+                },
+              )),
+              Flexible(
+                child: Text(
+                  rememberMeText,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Appcolor.lightBlack,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 10,
+                ),
               ),
-            ),
-            SizedBox(width:5.0),
-            grayText(
-              'Remember Me',
-            ),
-          ],
-        ),
-        GestureDetector(
-          onTap: () {
-            Get.toNamed('/forgotPassScreen');
-          },
-          child: Text(
-            'Forgot Password',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-              color:Appcolor.purple
-            ),
+            ],
           ),
         ),
+        if (forgotPasswordText != null)
+          GestureDetector(
+            onTap: () {
+              Get.toNamed('/forgotPassScreen');
+            },
+            child: Text(
+              forgotPasswordText!,
+              style: const TextStyle(
+                fontSize: 14,
+                color: Color.fromRGBO(196, 39, 144, 1),
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
       ],
     );
   }

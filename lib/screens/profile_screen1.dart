@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'package:fleetmasta/components/custom_txtbox.dart';
 import 'package:fleetmasta/components/logout_popup.dart';
+import 'package:fleetmasta/components/notification_popup.dart';
 import 'package:fleetmasta/components/profile_popup.dart';
 import 'package:fleetmasta/components/slider.dart';
 import 'package:fleetmasta/const/colors.dart';
@@ -45,19 +46,21 @@ Widget build(BuildContext context) {
                   children: [
                         SizedBox(height: 50,),
                     Row(
-                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.end,
                        children: [
-                         InkWell(
-                           onTap: () {
-                             Navigator.pop(context);
+                         IconButton(
+                           icon: SvgPicture.asset('assets/icons/alert.svg'),
+                           onPressed: () {
+                             showDialog(
+                               context: context,
+                               builder: (BuildContext context) {
+                                 return NotificationPopup(onAllNotificationTap: () {  },);
+                               },
+                             );
                            },
-                           child: Align(
-                             alignment: Alignment.topLeft,
-
-                           ),
                          ),
                          IconButton(
-                           icon: Icon(Icons.account_circle,color: Colors.white),
+                           icon: Image.asset("assets/images/user-thumb.png" , width: 20,color: Appcolor.white,),
                            onPressed: () {
                              showDialog(
                                context: context,
@@ -87,6 +90,7 @@ Widget build(BuildContext context) {
                              );
                            },
                          ),
+
                        ],
                      ),
                    // SizedBox(height: height * 0.02), // 2% of screen height
@@ -125,17 +129,17 @@ Widget build(BuildContext context) {
                           Obx(() {
                             return
                             Stack(
-                              alignment: Alignment.topRight,
+                              alignment: Alignment.bottomRight,
                               children: [
                               IconButton(onPressed: (){
                                 imagePickerController.pickImage();
-                              },   icon: const Icon(Icons.edit, size: 30,),),
+                              },   icon: const Icon(Icons.camera_alt_sharp, size: 25,),),
                               Padding(
                                 padding: EdgeInsets.all(10),
                                 child: ClipOval(
                                   child: imagePickerController.selectedImagePath.value.isEmpty
                                       ? Image.asset(
-                                    'assets/icons/profile_icon.png',
+                                    'assets/images/user-thumb.png',
                                     height: MediaQuery.of(context).size.height * 0.15,
                                     fit: BoxFit.cover,
                                   )
@@ -193,7 +197,6 @@ Widget build(BuildContext context) {
                                     ),
                                     SizedBox(height: 5,),
                                     CustomTextBox(
-
                                         onValidate:(str){
                                           return HelperFunction.checkFirstName(str);
                                         },

@@ -1,5 +1,10 @@
+import 'package:fleetmasta/screens/add_assets_view.dart';
+import 'package:fleetmasta/screens/add_new_invoices_screeen.dart';
+import 'package:fleetmasta/screens/all_expenses_screen.dart';
+import 'package:fleetmasta/screens/all_invoices_screen.dart';
 import 'package:fleetmasta/screens/dashboard_screen.dart';
 import 'package:fleetmasta/screens/login_screen.dart';
+import 'package:fleetmasta/screens/notification_screen.dart';
 import 'package:fleetmasta/screens/profile_screen1.dart';
 import 'package:fleetmasta/screens/profile_screen2.dart';
 import 'package:fleetmasta/screens/profile_screen3.dart';
@@ -36,6 +41,11 @@ class AppRouting {
     GetPage(name: "/profileConfirmationScreen", page:()=>profileConfirmationScreen(),),
     GetPage(name: "/viewProfileScreen", page:()=>ViewProfileScreen1(),),
     GetPage(name: "/dashboardScreen", page:()=>DashboardScreen(),),
+    GetPage(name: "/notificationScreen", page:()=>NotificationScreen(),),
+    GetPage(name: "/addAssestsScreen", page:()=>AddAssetsScreen(),),
+    GetPage(name: "/allExpensesScreen", page:()=>AllExpensesScreen(),),
+    GetPage(name: "/allInvoicesScreen", page:()=>AllInvoicesScreen(),),
+    GetPage(name: "/addInvoicesScreen", page:()=>AddInvoicesScreen(),),
 
 
   ];

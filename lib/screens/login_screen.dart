@@ -2,6 +2,8 @@ import 'package:fleetmasta/components/checkbox.dart';
 import 'package:fleetmasta/const/colors.dart';
 import 'package:fleetmasta/const/custom_button.dart';
 import 'package:fleetmasta/const/custom_text.dart';
+import 'package:fleetmasta/controllers/check_box_controller.dart';
+import 'package:fleetmasta/controllers/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../components/custom_txtbox.dart';
@@ -9,7 +11,8 @@ import '../const/form_validation.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
-  final GlobalKey<FormState> formGlobalKey = GlobalKey();
+  final LoginController loginController = Get.put(LoginController());
+  final CheckboxController checkboxController = Get.put(CheckboxController());
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +58,7 @@ class LoginScreen extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                     child: Form(
-                      key: formGlobalKey,
+                      key: loginController.formGlobalKey,
                       child: Column(
                         children: [
                           SizedBox(height: 20),
@@ -94,7 +97,7 @@ class LoginScreen extends StatelessWidget {
                                   onValidate: (str) {
                                     return HelperFunction.checkEmail(str);
                                   },
-                                  controller: null,
+                                  controller:loginController.emailController,
                                   hintText: 'Enter your email address',
                                 ),
                               ],
@@ -135,7 +138,7 @@ class LoginScreen extends StatelessWidget {
                                   onValidate: (str) {
                                     return HelperFunction.checkPassword(str);
                                   },
-                                  controller: null,
+                                  controller:loginController.passwordController,
                                   hintText: '*******',
                                 ),
                               ],
@@ -143,17 +146,20 @@ class LoginScreen extends StatelessWidget {
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                            child: RememberMeForgotPassword(),
-                          ),
+                            child:
+                           RememberMeForgotPassword(
+                              rememberMeText: 'Remember me ', forgotPasswordText: 'Forgot password',),
+                            ),
                           SizedBox(height: 25),
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: verticalPadding, horizontal: 10),
                             child: CustomButton(
                               text: 'Sign in',
                               onPressed: () {
-                                if (formGlobalKey.currentState!.validate()) {
-                                  Get.toNamed('/resetPassScreen');
-                                }
+                                loginController.login();
+                                // if (formGlobalKey.currentState!.validate()) {
+                                //   Get.toNamed('/resetPassScreen');
+                                // }
                               },
                             ),
                           ),

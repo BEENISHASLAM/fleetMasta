@@ -1,6 +1,7 @@
 import 'package:fleetmasta/const/colors.dart';
 import 'package:fleetmasta/const/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CustomDrawer extends StatelessWidget {
   final Function() onHomeTap;
@@ -118,12 +119,19 @@ class CustomDrawer extends StatelessWidget {
               Navigator.pop(context);
               // Handle the Contact action here
             },
+          ), ListTile(
+            leading: Image.asset('assets/images/report.png'),
+            title: whiteText(' All Expenses'),
+            onTap: () {
+             Get.toNamed('allExpensesScreen');
+              // Handle the Contact action here
+            },
           ),
           ListTile(
             leading: Image.asset('assets/images/report.png'),
             title: whiteText('Invoices'),
             onTap: () {
-              Navigator.pop(context);
+              Get.toNamed('allInvoicesScreen');
               // Handle the Contact action here
             },
           ),

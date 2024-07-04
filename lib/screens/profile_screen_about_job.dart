@@ -3,6 +3,7 @@
 
 import 'package:fleetmasta/components/custom_txtbox.dart';
 import 'package:fleetmasta/components/logout_popup.dart';
+import 'package:fleetmasta/components/notification_popup.dart';
 import 'package:fleetmasta/components/profile_popup.dart';
 import 'package:fleetmasta/components/slider.dart';
 import 'package:fleetmasta/const/colors.dart';
@@ -57,37 +58,50 @@ class ProfileScreenAboutJob extends StatelessWidget {
                                 child: Image.asset('assets/images/back_arrow.png'),
                               ),
                             ),
-                            IconButton(
-                              icon: Icon(Icons.account_circle,color: Colors.white),
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return ProfilePopup(
-                                      onProfileTap: () {
-                                        Get.toNamed('/viewProfileScreen');
-                                      },
-                                      onLogoutTap: () {
-                                        Navigator.of(context).pop(); // Close ProfilePopup
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return LogoutPopup(
-                                              onConfirmLogout: () {
-                                                Get.toNamed('/loginScreen');  // Close LogoutPopup
-                                              },
-                                              onCancel: () {
-                                                Navigator.of(context).pop(); // Close LogoutPopup
-                                              },
-                                            );
-                                          },
-                                        );
-                                      },
-                                    );
-                                  },
-                                );
-                              },
-                            ),
+                            Row(children: [
+                              IconButton(
+                                icon: SvgPicture.asset('assets/icons/alert.svg'),
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return NotificationPopup(onAllNotificationTap: () {  },);
+                                    },
+                                  );
+                                },
+                              ),
+                              IconButton(
+                                icon: Image.asset("assets/images/user-thumb.png" , width: 20,color: Appcolor.white,),
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return ProfilePopup(
+                                        onProfileTap: () {
+                                          Get.toNamed('/viewProfileScreen');
+                                        },
+                                        onLogoutTap: () {
+                                          Navigator.of(context).pop(); // Close ProfilePopup
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return LogoutPopup(
+                                                onConfirmLogout: () {
+                                                  Get.toNamed('/loginScreen'); // Close LogoutPopup
+                                                },
+                                                onCancel: () {
+                                                  Navigator.of(context).pop(); // Close LogoutPopup
+                                                },
+                                              );
+                                            },
+                                          );
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            ],)
                           ],
                         ),
                         // SizedBox(height: height * 0.02), // 2% of screen height
@@ -162,74 +176,63 @@ class ProfileScreenAboutJob extends StatelessWidget {
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    padding: EdgeInsets.all(10),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        SizedBox(
-                                            width: screenWidth * 0.4,
-                                            child:Column(
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                                          child: RichText(
+                                            text: TextSpan(
                                               children: [
-                                                Padding(
-                                                  padding: EdgeInsets.symmetric(horizontal: 10),
-                                                  child: Align(
-                                                    alignment: Alignment.topLeft,
-                                                    child: RichText(
-                                                      text: TextSpan(
-                                                        children: [
-                                                          TextSpan(
-                                                            text: "Job type",
-                                                            style: TextStyle(
-                                                              color: Appcolor.lightBlack,
-                                                              fontSize: 14,
-                                                              fontWeight: FontWeight.w700,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
+                                                TextSpan(
+                                                  text: 'Job type',
+                                                  style: TextStyle(
+                                                    color: Appcolor.lightBlack,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
                                                   ),
                                                 ),
-                                                SizedBox(height: 5,),
-                                                CustomTextBox(
-                                                  readOnly:true,
-                                                  controller:aboutJobController.jobType,
-                                                hintText: 'Full time',)
                                               ],
-                                            )
-
+                                            ),
+                                          ),
                                         ),
-                                        SizedBox(
-                                            width: screenWidth * 0.4,
-                                            child:Column(children: [
-                                              Padding(
-                                                padding: EdgeInsets.symmetric(horizontal:18),
-                                                child: Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: RichText(
-                                                    text: TextSpan(
-                                                      children: [
-                                                        TextSpan(
-                                                          text: "Type of contract",
-                                                          style: TextStyle(
-                                                            color: Appcolor.lightBlack,
-                                                           fontSize: 14,
-                                                            fontWeight: FontWeight.w700,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
+                                        SizedBox(height: 5,),
+                                        CustomTextBox(
+                                          readOnly:true,
+                                          controller:aboutJobController.jobType,
+                                          hintText: 'Full time',)
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: 'Type of contract',
+                                                  style: TextStyle(
+                                                    color: Appcolor.lightBlack,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
                                                   ),
                                                 ),
-                                              ),
-                                              SizedBox(height: 5,),
-                                              CustomTextBox(
-                                                  readOnly:true,
-                                                  controller:aboutJobController.typeOfContract,
-                                                  hintText: 'Permanent'
-                                              )
-                                            ],)
+                                              ],
+                                            ),
+                                          ),
                                         ),
+                                        SizedBox(height: 5,),
+                                        CustomTextBox(
+                                            readOnly:true,
+                                            controller:aboutJobController.typeOfContract,
+                                            hintText: 'Permanent'
+                                        )
                                       ],
                                     ),
                                   ),
@@ -265,74 +268,64 @@ class ProfileScreenAboutJob extends StatelessWidget {
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    padding: EdgeInsets.all(10),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        SizedBox(
-                                            width: screenWidth * 0.4,
-                                            child:Column(
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                                          child: RichText(
+                                            text: TextSpan(
                                               children: [
-                                                Padding(
-                                                  padding: EdgeInsets.symmetric(horizontal: 10),
-                                                  child: Align(
-                                                    alignment: Alignment.topLeft,
-                                                    child: RichText(
-                                                      text: TextSpan(
-                                                        children: [
-                                                          TextSpan(
-                                                            text: "Currency",
-                                                            style: TextStyle(
-                                                              color: Appcolor.lightBlack,
-                                                              fontSize: 14,
-                                                              fontWeight: FontWeight.w700,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
+                                                TextSpan(
+                                                  text: 'Currency',
+                                                  style: TextStyle(
+                                                    color: Appcolor.lightBlack,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
                                                   ),
                                                 ),
-                                                SizedBox(height: 5,),
-                                                CustomTextBox(
-                                                  readOnly:true,
-                                                  controller:aboutJobController.currency,
-                                                  hintText: '',)
-                                              ],
-                                            )
 
+                                              ],
+                                            ),
+                                          ),
                                         ),
-                                        SizedBox(
-                                            width: screenWidth * 0.4,
-                                            child:Column(children: [
-                                              Padding(
-                                                padding: EdgeInsets.symmetric(horizontal:20),
-                                                child: Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: RichText(
-                                                    text: TextSpan(
-                                                      children: [
-                                                        TextSpan(
-                                                          text: "Annual salary",
-                                                          style: TextStyle(
-                                                            color: Appcolor.lightBlack,
-                                                            fontSize: 14,
-                                                            fontWeight: FontWeight.w700,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
+                                        SizedBox(height: 5,),
+                                        CustomTextBox(
+                                          readOnly:true,
+                                          controller:aboutJobController.currency,
+                                          hintText: '',)
+                                      ],
+                                    ),
+                                  ),  Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: 'Annual salary',
+                                                  style: TextStyle(
+                                                    color: Appcolor.lightBlack,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
                                                   ),
                                                 ),
-                                              ),
-                                              SizedBox(height: 5,),
-                                              CustomTextBox(
-                                                  readOnly:true,
-                                                  controller:aboutJobController.annualSalary,
-                                                  hintText: ''
-                                              )
-                                            ],)
+
+                                              ],
+                                            ),
+                                          ),
                                         ),
+                                        SizedBox(height: 5,),
+                                        CustomTextBox(
+                                            readOnly:true,
+                                            controller:aboutJobController.annualSalary,
+                                            hintText: ''
+                                        )
                                       ],
                                     ),
                                   ),

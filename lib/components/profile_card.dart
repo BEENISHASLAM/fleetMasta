@@ -11,13 +11,13 @@ class ProfileStatusCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.5),
-            blurRadius: 8.0,
-            offset: Offset(0, 2),
-          ),
-        ],
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: Appcolor.white,
+        //     blurRadius: 8.0,
+        //     offset: Offset(0, 2),
+        //   ),
+        // ],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,8 +25,9 @@ class ProfileStatusCard extends StatelessWidget {
           Column(
             children: [
               CircleAvatar(
+                backgroundColor: Appcolor.white,
                 radius: 60.0,
-                backgroundImage: AssetImage('assets/icons/profile_icon.png'), // Replace with your image asset path
+                backgroundImage: AssetImage('assets/images/user-thumb.png'), // Replace with your image asset path
               ),
             ],
           ),
@@ -64,7 +65,6 @@ class ProfileStatusCard extends StatelessWidget {
 
   Widget _buildStatusRow(String label, String status, Color statusColor, Color bgColor) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           label,
@@ -73,23 +73,40 @@ class ProfileStatusCard extends StatelessWidget {
             color: Appcolor.lightBlack,
           ),
         ),
-        SizedBox(height:3,),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
-          decoration: BoxDecoration(
+         SizedBox(height:3,),
+       Container(
+       decoration: BoxDecoration(
             color: bgColor,
             borderRadius: BorderRadius.circular(12.0),
           ),
-          child: Text(
-            status,
-            style: TextStyle(
-              color: statusColor,
-              fontWeight: FontWeight.bold,
-                fontSize: 14
-            ),
-          ),
-        ),
-       // Divider(),
+    child: Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+      child: Text(
+           status,
+           style: TextStyle(
+             color: statusColor,
+             fontWeight: FontWeight.bold,
+               fontSize: 14
+           ),
+         ),
+    ))
+       //  SizedBox(height:3,),
+       //  Container(
+       //    padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+       //    decoration: BoxDecoration(
+       //      color: bgColor,
+       //      borderRadius: BorderRadius.circular(12.0),
+       //    ),
+       //    child: Text(
+       //      status,
+       //      style: TextStyle(
+       //        color: statusColor,
+       //        fontWeight: FontWeight.bold,
+       //          fontSize: 14
+       //      ),
+       //    ),
+       //  ),
+       // // Divider(),
       ],
     );
   }

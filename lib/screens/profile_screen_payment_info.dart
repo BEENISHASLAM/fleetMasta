@@ -3,6 +3,7 @@ import 'package:fleetmasta/components/custom_dropdown.dart';
 import 'package:fleetmasta/components/custom_txtbox.dart';
 import 'package:fleetmasta/components/custom_tab.dart';
 import 'package:fleetmasta/components/logout_popup.dart';
+import 'package:fleetmasta/components/notification_popup.dart';
 import 'package:fleetmasta/components/profile_popup.dart';
 import 'package:fleetmasta/components/slider.dart';
 import 'package:fleetmasta/const/colors.dart';
@@ -12,6 +13,7 @@ import 'package:fleetmasta/const/form_validation.dart';
 import 'package:fleetmasta/controllers/profile_controller.dart';
 import 'package:fleetmasta/controllers/profile_screen_paymentInfo_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class ProfileScreenPaymentInfo extends StatelessWidget {
@@ -56,37 +58,50 @@ Widget build(BuildContext context) {
                               child: Image.asset('assets/images/back_arrow.png'),
                             ),
                           ),
-                          IconButton(
-                            icon: Icon(Icons.account_circle,color: Colors.white),
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return ProfilePopup(
-                                    onProfileTap: () {
-                                      Get.toNamed('/viewProfileScreen');
-                                    },
-                                    onLogoutTap: () {
-                                      Navigator.of(context).pop(); // Close ProfilePopup
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return LogoutPopup(
-                                            onConfirmLogout: () {
-                                              Get.toNamed('/loginScreen');
-                                            },
-                                            onCancel: () {
-                                              Navigator.of(context).pop(); // Close LogoutPopup
-                                            },
-                                          );
-                                        },
-                                      );
-                                    },
-                                  );
-                                },
-                              );
-                            },
-                          ),
+                          Row(children: [
+                            IconButton(
+                              icon: SvgPicture.asset('assets/icons/alert.svg'),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return NotificationPopup(onAllNotificationTap: () {  },);
+                                  },
+                                );
+                              },
+                            ),
+                            IconButton(
+                              icon: Image.asset("assets/images/user-thumb.png" , width: 20,color: Appcolor.white,),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return ProfilePopup(
+                                      onProfileTap: () {
+                                        Get.toNamed('/viewProfileScreen');
+                                      },
+                                      onLogoutTap: () {
+                                        Navigator.of(context).pop(); // Close ProfilePopup
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return LogoutPopup(
+                                              onConfirmLogout: () {
+                                                Get.toNamed('/loginScreen'); // Close LogoutPopup
+                                              },
+                                              onCancel: () {
+                                                Navigator.of(context).pop(); // Close LogoutPopup
+                                              },
+                                            );
+                                          },
+                                        );
+                                      },
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ],)
                         ],
                       ),
                       // SizedBox(height: height * 0.02), // 2% of screen height
@@ -274,188 +289,168 @@ Widget build(BuildContext context) {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      SizedBox(
-                                          width: screenWidth * 0.4,
-                                          child:Column(
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsets.symmetric(horizontal: 10),
-                                                child: Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: RichText(
-                                                    text: TextSpan(
-                                                      children: [
-                                                        TextSpan(
-                                                          text: "Bank name ",
-                                                          style: TextStyle(
-                                                            color: Appcolor.lightBlack,
-                                                            fontSize: 14,
-                                                            fontWeight: FontWeight.w700,
-                                                          ),
-                                                        ),
-                                                        TextSpan(
-                                                          text: '*',
-                                                          style: TextStyle(
-                                                            color: Appcolor.purple,
-                                                            fontSize: 14,
-                                                            fontWeight: FontWeight.w700,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
+                                  padding: EdgeInsets.all(10),
+                                  child: Container(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: 'Bank name',
+                                                  style: TextStyle(
+                                                    color: Appcolor.lightBlack,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
                                                   ),
                                                 ),
-                                              ),
-                                              SizedBox(height: 5,),
-                                              CustomTextBox(
-                                                onValidate:(str){
-                                                  return HelperFunction.checkFirstName(str);
-                                                },
-                                                hintText: '',)
-                                            ],
-                                          )
-
-                                      ),
-                                      SizedBox(
-                                          width: screenWidth * 0.4,
-                                          child:Column(children: [
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(horizontal:18),
-                                              child: Align(
-                                                alignment: Alignment.topLeft,
-                                                child: RichText(
-                                                  text: TextSpan(
-                                                    children: [
-                                                      TextSpan(
-                                                        text: "Account name",
-                                                        style: TextStyle(
-                                                          color: Appcolor.lightBlack,
-                                                         fontSize: 14,
-                                                          fontWeight: FontWeight.w700,
-                                                        ),
-                                                      ),
-                                                      TextSpan(
-                                                        text: '*',
-                                                        style: TextStyle(
-                                                          color: Appcolor.purple,
-                                                          fontSize: 14,
-                                                          fontWeight: FontWeight.w700,
-                                                        ),
-                                                      ),
-                                                    ],
+                                                TextSpan(
+                                                  text: '*',
+                                                  style: TextStyle(
+                                                    color: Appcolor.purple,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
                                                   ),
                                                 ),
-                                              ),
+                                              ],
                                             ),
-                                            SizedBox(height: 5,),
-                                            CustomTextBox(
-                                              onValidate:(str){
-                                                return HelperFunction.checkFirstName(str);
-                                              },
-                                              hintText: '',
-                                              controller: null,
-                                            )
-                                          ],)
-                                      ),
-                                    ],
+                                          ),
+                                        ),
+                                        SizedBox(height: 5,),
+                                        CustomTextBox(
+                                          onValidate:(str){
+                                            return HelperFunction.checkFirstName(str);
+                                          },
+                                          hintText: '',)
+                                      ],
+                                    ),
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      SizedBox(
-                                          width: screenWidth * 0.4,
-                                          child:Column(
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsets.symmetric(horizontal: 10),
-                                                child: Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: RichText(
-                                                    text: TextSpan(
-                                                      children: [
-                                                        TextSpan(
-                                                          text: "Sort code",
-                                                          style: TextStyle(
-                                                            color: Appcolor.lightBlack,
-                                                            fontSize: 14,
-                                                            fontWeight: FontWeight.w700,
-                                                          ),
-                                                        ),
-                                                        TextSpan(
-                                                          text: '*',
-                                                          style: TextStyle(
-                                                            color: Appcolor.purple,
-                                                            fontSize: 14,
-                                                            fontWeight: FontWeight.w700,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
+                                  padding: EdgeInsets.all(10),
+                                  child: Container(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: 'Account name',
+                                                  style: TextStyle(
+                                                    color: Appcolor.lightBlack,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
                                                   ),
                                                 ),
-                                              ),
-                                              SizedBox(height: 5,),
-                                              CustomTextBox(
-                                                onValidate:(str){
-                                                  return HelperFunction.checkFirstName(str);
-                                                },
-                                                controller: null,
-                                                hintText: '',)
-                                            ],
-                                          )
-
-                                      ),
-                                      SizedBox(
-                                          width: screenWidth * 0.4,
-                                          child:Column(children: [
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(horizontal:18),
-                                              child: Align(
-                                                alignment: Alignment.topLeft,
-                                                child: RichText(
-                                                  text: TextSpan(
-                                                    children: [
-                                                      TextSpan(
-                                                        text: "Account number",
-                                                        style: TextStyle(
-                                                          color: Appcolor.lightBlack,
-                                                         fontSize: 14,
-                                                          fontWeight: FontWeight.w700,
-                                                        ),
-                                                      ),
-                                                      TextSpan(
-                                                        text: '*',
-                                                        style: TextStyle(
-                                                          color: Appcolor.purple,
-                                                          fontSize: 14,
-                                                          fontWeight: FontWeight.w700,
-                                                        ),
-                                                      ),
-                                                    ],
+                                                TextSpan(
+                                                  text: '*',
+                                                  style: TextStyle(
+                                                    color: Appcolor.purple,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
                                                   ),
                                                 ),
-                                              ),
+                                              ],
                                             ),
-                                            SizedBox(height: 5,),
-                                            CustomTextBox(
-                                              onValidate:(str){
-                                                return HelperFunction.checkFirstName(str);
-                                              },
-                                              controller: null,
-                                              hintText: '',
-                                            )
-                                          ],)
-                                      ),
-                                    ],
+                                          ),
+                                        ),
+                                        SizedBox(height: 5,),
+                                        CustomTextBox(
+                                          onValidate:(str){
+                                            return HelperFunction.checkFirstName(str);
+                                          },
+                                          hintText: '',)
+                                      ],
+                                    ),
+                                  ),
+                                ),  Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Container(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: 'Sort code',
+                                                  style: TextStyle(
+                                                    color: Appcolor.lightBlack,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: '*',
+                                                  style: TextStyle(
+                                                    color: Appcolor.purple,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 5,),
+                                        CustomTextBox(
+                                          onValidate:(str){
+                                            return HelperFunction.checkFirstName(str);
+                                          },
+                                          hintText: '',)
+                                      ],
+                                    ),
+                                  ),
+                                ),  Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Container(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: 'Account number',
+                                                  style: TextStyle(
+                                                    color: Appcolor.lightBlack,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: '*',
+                                                  style: TextStyle(
+                                                    color: Appcolor.purple,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 5,),
+                                        CustomTextBox(
+                                          onValidate:(str){
+                                            return HelperFunction.checkFirstName(str);
+                                          },
+                                          hintText: '',)
+                                      ],
+                                    ),
                                   ),
                                 ),
+
                               ],
                             ),
                           ),

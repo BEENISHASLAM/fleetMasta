@@ -1,6 +1,7 @@
 import 'package:fleetmasta/components/app_menu.dart';
 import 'package:fleetmasta/components/custom_txtbox.dart';
 import 'package:fleetmasta/components/logout_popup.dart';
+import 'package:fleetmasta/components/notification_popup.dart';
 import 'package:fleetmasta/components/profile_popup.dart';
 import 'package:fleetmasta/components/slider.dart';
 import 'package:fleetmasta/const/colors.dart';
@@ -57,37 +58,50 @@ class ProfileScreen3 extends StatelessWidget {
                                 child: Image.asset('assets/images/back_arrow.png'),
                               ),
                             ),
-                            IconButton(
-                              icon: Icon(Icons.account_circle,color: Colors.white),
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return ProfilePopup(
-                                      onProfileTap: () {
-                                        Get.toNamed('/viewProfileScreen');
-                                      },
-                                      onLogoutTap: () {
-                                        Navigator.of(context).pop(); // Close ProfilePopup
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return LogoutPopup(
-                                              onConfirmLogout: () {
-                                                Get.toNamed('/loginScreen');  // Close LogoutPopup
-                                              },
-                                              onCancel: () {
-                                                Navigator.of(context).pop(); // Close LogoutPopup
-                                              },
-                                            );
-                                          },
-                                        );
-                                      },
-                                    );
-                                  },
-                                );
-                              },
-                            ),
+                            Row(children: [
+                              IconButton(
+                                icon: SvgPicture.asset('assets/icons/alert.svg'),
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return NotificationPopup(onAllNotificationTap: () {  },);
+                                    },
+                                  );
+                                },
+                              ),
+                              IconButton(
+                                icon: Image.asset("assets/images/user-thumb.png" , width: 20,color: Appcolor.white,),
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return ProfilePopup(
+                                        onProfileTap: () {
+                                          Get.toNamed('/viewProfileScreen');
+                                        },
+                                        onLogoutTap: () {
+                                          Navigator.of(context).pop(); // Close ProfilePopup
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return LogoutPopup(
+                                                onConfirmLogout: () {
+                                                  Get.toNamed('/loginScreen'); // Close LogoutPopup
+                                                },
+                                                onCancel: () {
+                                                  Navigator.of(context).pop(); // Close LogoutPopup
+                                                },
+                                              );
+                                            },
+                                          );
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            ],)
                           ],
                         ),
                         // SizedBox(height: height * 0.02), // 2% of screen height
@@ -302,7 +316,7 @@ class ProfileScreen3 extends StatelessWidget {
                                         SizedBox(height: 8,),
                                        Padding(
                                          padding: const EdgeInsets.all(4.0),
-                                         child: CustomDropdown(
+                                         child:CustomDropdown(
                                              validator: (value) {
                                                if (value == null || value.isEmpty) {
                                                  return '';
@@ -310,8 +324,13 @@ class ProfileScreen3 extends StatelessWidget {
                                                return null;
                                              },
                                            text: 'Select',
-                                             items: ['Yes', 'No']),
-                                       )
+                                             items: ['Yes', 'No'],
+                                           onChanged: (String? newValue) {
+                                             if (newValue != null) {
+                                               profileController.setSelectedValueProofP45(newValue);
+                                             }
+                                           },
+                                         )),
                                       ],
                                     ),
                                   ),

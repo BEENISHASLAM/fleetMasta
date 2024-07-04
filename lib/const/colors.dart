@@ -2,6 +2,7 @@ import 'dart:ui';
 
 class Appcolor {
   static Color purple = Color.fromRGBO(196, 39, 144, 1);
+  static Color blue = Color.fromRGBO(151, 71, 255,1);
   static Color white = Color.fromRGBO(255, 255, 255, 1.0);
   static Color lightGrey = Color.fromRGBO(255, 254, 254, 1);
   static Color black = Color.fromRGBO(0, 0, 0, 1);
@@ -13,6 +14,9 @@ class Appcolor {
   static Color lightBlack = Color.fromRGBO(88, 90, 97, 1);
   static Color bbg1= Color.fromRGBO(233, 233, 233, 1);
   static Color pink= Color.fromRGBO(254, 185, 231, 1);
+
+
+
 
 
 

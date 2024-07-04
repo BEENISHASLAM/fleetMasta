@@ -2,6 +2,7 @@ import 'package:fleetmasta/components/app_menu.dart';
 import 'package:fleetmasta/components/custom_dropdown.dart';
 import 'package:fleetmasta/components/custom_txtbox.dart';
 import 'package:fleetmasta/components/logout_popup.dart';
+import 'package:fleetmasta/components/notification_popup.dart';
 import 'package:fleetmasta/components/profile_popup.dart';
 import 'package:fleetmasta/components/slider.dart';
 import 'package:fleetmasta/const/colors.dart';
@@ -11,6 +12,7 @@ import 'package:fleetmasta/const/form_validation.dart';
 import 'package:fleetmasta/controllers/profile_controller.dart';
 import 'package:fleetmasta/controllers/profile_screen_emergency_contact_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class ProfileScreenEmergencyContact extends StatelessWidget {
@@ -54,37 +56,50 @@ class ProfileScreenEmergencyContact extends StatelessWidget {
                                 child: Image.asset('assets/images/back_arrow.png'),
                               ),
                             ),
-                            IconButton(
-                              icon: Icon(Icons.account_circle,color: Colors.white),
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return ProfilePopup(
-                                      onProfileTap: () {
-                                        Get.toNamed('/viewProfileScreen');
-                                      },
-                                      onLogoutTap: () {
-                                        Navigator.of(context).pop(); // Close ProfilePopup
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return LogoutPopup(
-                                              onConfirmLogout: () {
-                                                Get.toNamed('/loginScreen');
-                                              },
-                                              onCancel: () {
-                                                Navigator.of(context).pop(); // Close LogoutPopup
-                                              },
-                                            );
-                                          },
-                                        );
-                                      },
-                                    );
-                                  },
-                                );
-                              },
-                            ),
+                            Row(children: [
+                              IconButton(
+                                icon: SvgPicture.asset('assets/icons/alert.svg'),
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return NotificationPopup(onAllNotificationTap: () {  },);
+                                    },
+                                  );
+                                },
+                              ),
+                              IconButton(
+                                icon: Image.asset("assets/images/user-thumb.png" , width: 20,color: Appcolor.white,),
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return ProfilePopup(
+                                        onProfileTap: () {
+                                          Get.toNamed('/viewProfileScreen');
+                                        },
+                                        onLogoutTap: () {
+                                          Navigator.of(context).pop(); // Close ProfilePopup
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return LogoutPopup(
+                                                onConfirmLogout: () {
+                                                  Get.toNamed('/loginScreen'); // Close LogoutPopup
+                                                },
+                                                onCancel: () {
+                                                  Navigator.of(context).pop(); // Close LogoutPopup
+                                                },
+                                              );
+                                            },
+                                          );
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            ],)
                           ],
                         ),
                         // SizedBox(height: height * 0.02), // 2% of screen height
@@ -200,7 +215,6 @@ class ProfileScreenEmergencyContact extends StatelessWidget {
                                         ),
                                         SizedBox(height: 5,),
                                         CustomTextBox(
-                                          keyboardType:TextInputType.phone,
                                             onValidate:(str){
                                               return HelperFunction.checkFirstName(str);
                                             },

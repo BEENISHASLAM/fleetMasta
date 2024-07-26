@@ -98,7 +98,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             child: CustomButton(
               text: 'Get Started',
               onPressed: () {
-                Get.toNamed('/loginScreen');
+                Get.toNamed('/dummy');
               },
             ),
           ),

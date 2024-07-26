@@ -76,7 +76,7 @@ class CustomDrawer extends StatelessWidget {
             leading: Image.asset('assets/images/report.png'),
             title: whiteText('Incident Reporting'),
             onTap: () {
-              Navigator.pop(context);
+             Get.toNamed('allIncidentReportingScreen');
               // Handle the Contact action here
             },
           ),
